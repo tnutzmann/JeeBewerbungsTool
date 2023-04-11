@@ -6,6 +6,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 marp: true
 ---
 # **JobFinder**
+
 **von:** Matthias Enderlein, Tony Nutzmann, Max Riedel
 
 ---
@@ -13,10 +14,10 @@ marp: true
 ## **Problem**
 
 - Bewerbungsprozess meist einseitig
-  - Unternhemen veröffentlicht Stellen und wartet auf bewerber
+  - Unternhemen veröffentlicht Stellen und wartet auf Bewerber
   - Bewerber muss sich einzeln auf Stellen bewerben
-- Zeitaufwändig
-- Repetitiv
+- zeitaufwändig
+- repetitiv
 
 ---
 
