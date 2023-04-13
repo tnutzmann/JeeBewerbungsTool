@@ -36,7 +36,7 @@ marp: true
 - Nutzer erstellt Bewerber-Profil bei **JobFinder**
   - erhält Vorschläge anhand seines Profils
   - kann sich über **JobFinder** direkt bewerben
-- Unternehmen erstell Unternehmen-Profil bei **JobFinder**
+- Unternehmen erstellt Unternehmen-Profil bei **JobFinder**
   - veröffentlicht Stellen
   - kann sich direkt an Bewerber wenden
 
