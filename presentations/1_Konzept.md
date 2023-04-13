@@ -5,7 +5,7 @@ paginate: true
 backgroundImage: url('https://marp.app/assets/hero-background.svg')
 marp: true
 ---
-# **JobFinder**
+# **J🔍bFinder**
 
 **von:** Matthias Enderlein, Tony Nutzmann, Max Riedel
 
@@ -14,28 +14,33 @@ marp: true
 ## **Problem**
 
 - Bewerbungsprozess meist einseitig
-  - Unternhemen veröffentlicht Stellen und wartet auf Bewerber
+  - Unternehmen veröffentlicht Stellen und wartet auf Bewerber
   - Bewerber muss sich einzeln auf Stellen bewerben
-- zeitaufwändig
-- repetitiv
+- zeitaufwändig ⌛️
+- repetitiv ♻️
 
 ---
 
 ## **Lösung**
 
-- beschleunigen
-- vereinfachen
-- zentralisieren
+- beschleunigen 🏎️
+- vereinfachen 👌
+- zentralisieren 📍
 
-### :arrow_right: Bewerbungsprozess auf einer Seite abbilden
+### ➥ Bewerbungsprozess auf einer Seite abbilden
 
 ---
 
-## **JobFinder!**
+## **J🔍bFinder!**
 
 - Nutzer erstellt Bewerber-Profil bei **JobFinder**
   - erhält Vorschläge anhand seines Profils
   - kann sich über **JobFinder** direkt bewerben
-- Unternehmen erstell Unternhemen-Profil bei **JobFinder**
+- Unternehmen erstell Unternehmen-Profil bei **JobFinder**
   - veröffentlicht Stellen
   - kann sich direkt an Bewerber wenden
+
+
+---
+<!-- _class: lead -->
+# 👋
