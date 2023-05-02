@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .formLogin()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and().authorizeHttpRequests()
-                .requestMatchers("/**'").permitAll();
+                .requestMatchers("/**").permitAll();
         return http.build();
     }
 
