@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    container_name: jinba-db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: jinba
+    ports:
+      - 3306:3306
