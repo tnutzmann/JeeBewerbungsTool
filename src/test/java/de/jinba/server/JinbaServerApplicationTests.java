@@ -1,10 +1,10 @@
-package de.jobfinder.server;
+package de.jinba.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JobFinderServerApplicationTests {
+class JinbaServerApplicationTests {
 
 	@Test
 	void contextLoads() {
