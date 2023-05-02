@@ -13,43 +13,11 @@ marp: true
 ---
 
 # Team
-- agli
+- Agil
 - github zentriert
-- 4 Augenprinzip
+  - Aufgaben verteilung mit Issues
+  - 4 Augenprinzip in Pull-Requests
 
 ---
-
-# Klassen --> UML 
-- User
-  - Name usw.
-  - Academic Background
-  - Skills[]
-  - Bewerbungen
-
-- Skill
-  - Name
-  - Type
-  - Description
-
-- Company
-  - Name, Description usw.
-  - Jobs[]
-
-- Job
-  - Title, Description, Location usw.
-  - Tags[]
-  - Skills/Requirements[]
-  - Bewerber[]
-  - state: Enum
-
-- Tag
-  - Name
-
----
-# Recomendation-AI 
-- Selling Point
-- Fancy
-- Hot
-- alot if-else
-- maybe some Java-Streams
-- no neural network
+# ERM
+![bg 60%](ERM.svg)
