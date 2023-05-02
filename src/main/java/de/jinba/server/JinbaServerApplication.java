@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JinbaServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JinbaServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JinbaServerApplication.class, args);
+    }
 
 }
