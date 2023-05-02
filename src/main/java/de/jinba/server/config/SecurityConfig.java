@@ -1,7 +1,6 @@
 package de.jinba.server.config;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     @Bean
@@ -31,7 +30,7 @@ public class SecurityConfig {
                 .formLogin()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and().authorizeHttpRequests()
-                    .requestMatchers("/**'").permitAll();
+                .requestMatchers("/**'").permitAll();
         return http.build();
     }
 
