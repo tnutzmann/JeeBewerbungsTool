@@ -1,6 +1,6 @@
 package de.jinba.server.service;
 
-import de.jinba.server.dto.RegisterRequest;
+import de.jinba.server.dto.RegistrationRequest;
 import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Role;
 import de.jinba.server.exception.ParameterInvalidException;
@@ -19,7 +19,7 @@ public class JinbaUserRegistrationService implements RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void register(RegisterRequest request) {
+    public void register(RegistrationRequest request) {
         if (!ValidationUtil.isValidPassword(request.getPassword())) {
             throw new ParameterInvalidException("Password is invalid");
         }
