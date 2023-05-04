@@ -11,22 +11,22 @@ footer: 'Matthias Enderlein, Tony Nutzmann, Max Riedel'
 
 ---
 <!-- paginate: true -->
-# Team
+# **Team**
 - Agil
 - GITHUB zentriert
   - Aufgabenverteilung mit Issues
   - 4-Augenprinzip in Merge-Requests
 
 ---
-# Use Case
+# **Use Case**
 ![bg 60%](Anwendungsfälle.svg)
 
 ---
-# ERM
+# **ERM**
 ![bg 60%](ERM.svg)
 
 ---
-# Architecture
+# **Architecture**
 
 - 5 Layer:
   - Datenbank: MySQL 8
@@ -37,4 +37,8 @@ footer: 'Matthias Enderlein, Tony Nutzmann, Max Riedel'
   - Thymeleaf
 ---
 
-![bg 60%](Architecture.svg)
+![bg 70%](Architecture.svg)
+
+---
+<!-- _class: lead -->
+# 👋
