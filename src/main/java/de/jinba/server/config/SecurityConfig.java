@@ -27,23 +27,23 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors()
                 .and()
-                    .csrf().disable()
+                .csrf().disable()
                 .formLogin()
-                    .defaultSuccessUrl("/dashboard", true)
-                    .loginPage("/login")
+                .defaultSuccessUrl("/dashboard", true)
+                .loginPage("/login")
                 .and()
-                    .logout()
-                    .logoutSuccessUrl("/login?logout=true")
-                    .invalidateHttpSession(true)
-                    .deleteCookies("SESSION")
-                    .permitAll()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("SESSION")
+                .permitAll()
                 .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                    .authorizeHttpRequests()
-                    .requestMatchers("/register", "/login").permitAll()
-                    .requestMatchers("/dashboard").authenticated();
+                .authorizeHttpRequests()
+                .requestMatchers("/register", "/login").permitAll()
+                .requestMatchers("/dashboard").authenticated();
         return http.build();
     }
 

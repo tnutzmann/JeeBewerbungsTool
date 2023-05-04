@@ -27,7 +27,7 @@ public class ValidationUtil {
      * Method to test weather the email is valid or not
      */
     public static boolean isValidEmail(String email) {
-        if(Objects.isNull(email)) {
+        if (Objects.isNull(email)) {
             return false;
         }
         return VALID_EMAIL_ADDRESS_PATTERN.matcher(email).find();
@@ -43,7 +43,7 @@ public class ValidationUtil {
      * - min 8 max 20 characters<br>
      */
     public static boolean isValidPassword(String password) {
-        if(Objects.isNull(password)) {
+        if (Objects.isNull(password)) {
             return false;
         }
         return VALID_PASSWORD_PATTERN.matcher(password).find();

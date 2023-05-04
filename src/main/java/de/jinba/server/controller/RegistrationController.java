@@ -30,12 +30,11 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String doRegisterUser(@Valid @ModelAttribute("registerForm") RegisterRequest request,
-                                 BindingResult result,
-                                 Model model) {
-        if(appUserDetailsService.existsByUsername(request.getEmail())) {
+                                 BindingResult result) {
+        if (appUserDetailsService.existsByUsername(request.getEmail())) {
             result.rejectValue("email", "error.registerForm", "Email already exists");
         }
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "register";
         }
         jinbaUserRegistrationService.register(request);
