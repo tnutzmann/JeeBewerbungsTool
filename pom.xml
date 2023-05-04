@@ -8,11 +8,11 @@
 		<version>3.0.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>de.jobfinder</groupId>
+	<groupId>de.jinba</groupId>
 	<artifactId>server</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>JobFinder Server</name>
-	<description>Server of JobFinder</description>
+	<name>Jinba Server</name>
+	<description>Server of Jinba</description>
 	<properties>
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
