@@ -26,11 +26,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors()
-                .and().csrf().disable()
+                .and()
+                    .csrf().disable()
                 .formLogin()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and().authorizeHttpRequests()
-                .requestMatchers("/**").permitAll();
+                    .defaultSuccessUrl("/dashboard", true)
+                    .loginPage("/login")
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/login?logout=true")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("SESSION")
+                    .permitAll()
+                .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                    .authorizeHttpRequests()
+                    .requestMatchers("/register", "/login").permitAll()
+                    .requestMatchers("/dashboard").authenticated();
         return http.build();
     }
 
