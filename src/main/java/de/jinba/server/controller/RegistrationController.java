@@ -1,6 +1,6 @@
 package de.jinba.server.controller;
 
-import de.jinba.server.dto.RegisterRequest;
+import de.jinba.server.dto.RegistrationRequest;
 import de.jinba.server.service.AppUserDetailsService;
 import de.jinba.server.service.JinbaUserRegistrationService;
 import jakarta.validation.Valid;
@@ -22,14 +22,14 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String viewRegisterUserPage(Model model) {
-        model.addAttribute("registerForm", new RegisterRequest("",
+        model.addAttribute("registerForm", new RegistrationRequest("",
                 "", "", "", ""));
         model.addAttribute("error", null);
         return "register";
     }
 
     @PostMapping("/register")
-    public String doRegisterUser(@Valid @ModelAttribute("registerForm") RegisterRequest request,
+    public String doRegisterUser(@Valid @ModelAttribute("registerForm") RegistrationRequest request,
                                  BindingResult result) {
         if (appUserDetailsService.existsByUsername(request.getEmail())) {
             result.rejectValue("email", "error.registerForm", "Email already exists");
