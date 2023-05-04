@@ -17,15 +17,16 @@ import java.util.ArrayList;
 public class JinbaUserRegistrationService implements RegistrationService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+
     @Override
     public void register(RegisterRequest request) {
-        if(!ValidationUtil.isValidPassword(request.getPassword())){
+        if (!ValidationUtil.isValidPassword(request.getPassword())) {
             throw new ParameterInvalidException("Password is invalid");
         }
-        if(!ValidationUtil.isValidEmail(request.getEmail())){
+        if (!ValidationUtil.isValidEmail(request.getEmail())) {
             throw new ParameterInvalidException("Email is invalid");
         }
-        AppUser appUser =  AppUser.builder()
+        AppUser appUser = AppUser.builder()
                 .role(Role.DEFAULT_USER)
                 .details(request.getDetails())
                 .email(request.getEmail())

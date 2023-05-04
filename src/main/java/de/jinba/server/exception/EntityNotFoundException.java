@@ -12,7 +12,9 @@ public class EntityNotFoundException extends ResponseStatusException {
         this(null);
     }
 
-    public EntityNotFoundException(String reason) {this(reason, null);}
+    public EntityNotFoundException(String reason) {
+        this(reason, null);
+    }
 
     public EntityNotFoundException(String reason, Throwable cause) {
         this(reason, cause, null, null);
