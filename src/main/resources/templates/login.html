@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+<div class="d-flex min-vh-100 align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col md-8">
+                <div class="card-group">
+                    <div class="card p-4">
+                        <div class="card-body">
+                            <h1>Log In</h1>
+                            <form th:action="@{/login}" method="post">
+                                <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show">
+                                    <span>Invalid Credentials</span>
+                                    <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show">
+                                    <span>You have benn logged out.</span>
+                                    <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Email Address</label>
+                                    <input id="username" name="username" type="email" class="form-control" required/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input id="password" name="password" type="password" class="form-control" required/>
+                                </div>
+                                <div>
+                                    <input type="submit" value="Log In" class="btn btn-primary"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card py-5 bg-primary text-white">
+                        <div class="card-body text-center d-flex justify-content-center align-items-center">
+                            <div>
+                                <h2>Register</h2>
+                                <p>Missing an Account? Register here</p>
+                                <a class="btn btn-primary mt-3 px-4" th:href="@{/register}">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/js/coreui.bundle.min.js" integrity="sha384-n0qOYeB4ohUPebL1M9qb/hfYkTp4lvnZM6U6phkRofqsMzK29IdkBJPegsyfj/r4" crossorigin="anonymous"></script>
+</body>
+</html>
