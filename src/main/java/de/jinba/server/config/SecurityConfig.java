@@ -43,7 +43,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/register", "/login").permitAll()
-                .requestMatchers("/dashboard").authenticated();
+                .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/**").permitAll();
         return http.build();
     }
 
