@@ -1,4 +1,4 @@
-package de.jinba.server.entity;
+package de.jinba.server.entity.enumuration;
 
 public enum Role {
     DEFAULT_USER("DEFAULT_USER"), ADMIN("ADMIN"), COMPANY_USER("COMPANY_USER");
