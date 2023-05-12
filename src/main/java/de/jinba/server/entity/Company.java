@@ -1,5 +1,6 @@
 package de.jinba.server.entity;
 
+import de.jinba.server.entity.constraint.CompanyAdminConstraint;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Company {
     private String description;
     @OneToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    @CompanyAdminConstraint
     private AppUser admin;
     @OneToMany
     @JoinColumn(name = "job_offer_company", referencedColumnName = "id")
