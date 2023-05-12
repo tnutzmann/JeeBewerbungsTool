@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Jinba - Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+    <link th:href="@{/css/coreui/coreui.min.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div class="d-flex min-vh-100 align-items-center">
@@ -14,7 +14,7 @@
                     <div class="card p-4">
                         <div class="card-body">
                             <h1>Log In</h1>
-                            <form th:action="@{/login}" method="post">
+                            <form th:action="@{/templates/views/login}" method="post">
                                 <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show">
                                     <span>Invalid Credentials</span>
                                     <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
@@ -42,7 +42,10 @@
                             <div>
                                 <h2>Register</h2>
                                 <p>Missing an Account? Register here</p>
-                                <a class="btn btn-primary mt-3 px-4" th:href="@{/register}">Register</a>
+                                <div class="w-100">
+                                    <a class="btn btn-outline-light mt-3 px-4 me-3" th:href="@{/register}">For User</a>
+                                    <a class="btn btn-outline-light mt-3 px-4" th:href="@{/register/business}">For Businesses</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,6 +54,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/js/coreui.bundle.min.js" integrity="sha384-n0qOYeB4ohUPebL1M9qb/hfYkTp4lvnZM6U6phkRofqsMzK29IdkBJPegsyfj/r4" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/coreui/coreui.min.js}"></script>
 </body>
 </html>
