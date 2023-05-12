@@ -11,17 +11,17 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegistrationRequest {
+public class UserRegistrationRequest {
     @NotEmpty(message = "Cannot be empty")
     @Email(message = "Invalid email format")
     private String email;
     @NotEmpty(message = "Cannot be empty")
     @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
-    @Pattern(regexp = "^(?=.*[0-9]).{8,20}$", message = "Must contain at least one digit")
-    @Pattern(regexp = "^(?=.*[a-z]).{8,20}$", message = "Must contain at least one lower case letter")
-    @Pattern(regexp = "^(?=.*[A-Z]).{8,20}$", message = "Must contain at least one upper case letter")
-    @Pattern(regexp = "^(?=.*[@#$%^&+=!]).{8,20}$", message = "Must contain at least one special character (@#$%^&+=!)")
-    @Pattern(regexp = "^(?=\\S+$).{8,20}$", message = "No whitespace allowed")
+    @Pattern(regexp = "^(?=.*[0-9]).*$", message = "Must contain at least one digit")
+    @Pattern(regexp = "^(?=.*[a-z]).*$", message = "Must contain at least one lower case letter")
+    @Pattern(regexp = "^(?=.*[A-Z]).*$", message = "Must contain at least one upper case letter")
+    @Pattern(regexp = "^(?=.*[@#$%^&+=!]).*$", message = "Must contain at least one special character (@#$%^&+=!)")
+    @Pattern(regexp = "^(?=\\S+$).*$", message = "No whitespace allowed")
     private String password;
     @NotEmpty(message = "Cannot be empty")
     private String firstName;
