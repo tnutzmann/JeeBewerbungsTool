@@ -14,7 +14,7 @@
                     <div class="card p-4">
                         <div class="card-body">
                             <h1>Log In</h1>
-                            <form th:action="@{/templates/views/login}" method="post">
+                            <form th:action="@{/login}" method="post">
                                 <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show">
                                     <span>Invalid Credentials</span>
                                     <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
