@@ -1,7 +1,5 @@
 package de.jinba.server.service;
 
-import de.jinba.server.dto.RegistrationRequest;
-
-public interface RegistrationService {
-    void register(RegistrationRequest request);
+public interface RegistrationService<T> {
+    void register(T request);
 }

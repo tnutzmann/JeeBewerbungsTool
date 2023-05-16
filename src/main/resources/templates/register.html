@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Jinba - Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+    <link th:href="@{/css/coreui/coreui.min.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div class="d-flex min-vh-100 align-items-center">
@@ -33,7 +33,6 @@
                                         <ul>
                                             <li th:each="error : ${#fields.errors('password')}" th:text="${error}"></li>
                                         </ul>
-
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -76,7 +75,7 @@
                             <div>
                                 <h2>Login</h2>
                                 <p>Already have an account? Login in here</p>
-                                <a class="btn btn-primary mt-3 px-4" th:href="@{/login}">Login</a>
+                                <a class="btn btn-outline-light mt-3 px-4" th:href="@{/login}">Login</a>
                             </div>
                         </div>
                     </div>
@@ -85,6 +84,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/js/coreui.bundle.min.js" integrity="sha384-n0qOYeB4ohUPebL1M9qb/hfYkTp4lvnZM6U6phkRofqsMzK29IdkBJPegsyfj/r4" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/coreui/coreui.min.js}"></script>
 </body>
 </html>

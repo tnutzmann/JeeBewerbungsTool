@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Business Registration</title>
+    <link th:href="@{/css/coreui/coreui.min.css}" rel="stylesheet">
+    <link th:href="@{/css/tab.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="d-flex min-vh-100 align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col md-8">
+                <div class="card-group">
+                    <div class="card p-4">
+                        <div class="card-body">
+                            <h1>Register - Business</h1>
+                            <form action="#" method="post" th:action="@{/register/business}"
+                                  th:object="${registerForm}" id="register-form">
+                                <div class="tab">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="emailInput">Email Address</label>
+                                        <input aria-describedby="emailInputFeedback" class="form-control" id="emailInput"
+                                               th:classappend="${#fields.hasErrors('user.email')} ? 'is-invalid' : ''"
+                                               th:field="*{user.email}"
+                                               type="email"/>
+                                        <div class="invalid-feedback" id="emailInputFeedback"
+                                             th:if="${#fields.hasErrors('user.email')}">
+                                            <span th:errors="*{user.email}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="passwordInput">Password</label>
+                                        <input aria-describedby="passwordInputFeedback" class="form-control" id="passwordInput"
+                                               th:classappend="${#fields.hasErrors('user.password')} ? 'is-invalid' : ''"
+                                               th:field="*{user.password}"
+                                               type="password"/>
+                                        <div class="invalid-feedback" id="passwordInputFeedback"
+                                             th:if="${#fields.hasErrors('user.password')}">
+                                            <ul>
+                                                <li th:each="error : ${#fields.errors('user.password')}"
+                                                    th:text="${error}"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <label class="form-label" for="firstNameInput">First Name</label>
+                                            <input aria-describedby="firstNameInputFeedback" class="form-control" id="firstNameInput"
+                                                   th:classappend="${#fields.hasErrors('user.firstName')} ? 'is-invalid' : ''"
+                                                   th:field="*{user.firstName}"
+                                                   type="text"/>
+                                            <div class="invalid-feedback" id="firstNameInputFeedback"
+                                                 th:if="${#fields.hasErrors('user.firstName')}">
+                                                <span th:errors="*{user.firstName}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label" for="lastNameInput">Last Name</label>
+                                            <input aria-describedby="lastNameInputFeedback" class="form-control" id="lastNameInput"
+                                                   th:classappend="${#fields.hasErrors('user.lastName')} ? 'is-invalid' : ''"
+                                                   th:field="*{user.lastName}"
+                                                   type="text"/>
+                                            <div class="invalid-feedback" id="lastNameInputFeedback"
+                                                 th:if="${#fields.hasErrors('user.lastName')}">
+                                                <span th:errors="*{user.lastName}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="detailsInput">Details</label>
+                                        <textarea aria-describedby="detailsInputFeedback" class="form-control" id="detailsInput"
+                                                  th:classappend="${#fields.hasErrors('user.details')} ? 'is-invalid' : ''"
+                                                  th:field="*{user.details}"></textarea>
+                                        <div class="invalid-feedback" id="detailsInputFeedback"
+                                             th:if="${#fields.hasErrors('user.details')}">
+                                            <span th:errors="*{user.details}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="companyNameInput">Company Name</label>
+                                        <input type="text" aria-describedby="companyNameInputFeedback" class="form-control" id="companyNameInput"
+                                                  th:classappend="${#fields.hasErrors('company.name')} ? 'is-invalid' : ''"
+                                                  th:field="*{company.name}"/>
+                                        <div class="invalid-feedback" id="companyNameInputFeedback"
+                                             th:if="${#fields.hasErrors('company.name')}">
+                                            <span th:errors="*{company.name}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="companyDescInput">Company Description</label>
+                                        <input type="text" aria-describedby="companyDescInputFeedback" class="form-control" id="companyDescInput"
+                                                  th:classappend="${#fields.hasErrors('company.description')} ? 'is-invalid' : ''"
+                                                  th:field="*{company.description}"/>
+                                        <div class="invalid-feedback" id="companyDescInputFeedback"
+                                             th:if="${#fields.hasErrors('company.description')}">
+                                            <span th:errors="*{company.description}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-outline-primary px-4" type="button" id="prevBtn"
+                                        onclick="nextPrev(-1)" disabled>Back</button>
+                                <div class="progress d-inline-block w-50">
+                                    <div class="progress-bar h-100" id="progressBar" role="progressbar"
+                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <button type="button" class="btn btn-primary px-4" id="nextBtn"
+                                        onclick="nextPrev(1)">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card py-5 bg-primary text-white">
+                        <div class="card-body text-center d-flex justify-content-center align-items-center">
+                            <div>
+                                <h2>Login</h2>
+                                <p>Already have an account? Login in here</p>
+                                <a class="btn btn-outline-light mt-3 px-4" th:href="@{/login}">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/coreui/coreui.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/tabs.js}"></script>
+</body>
+</html>

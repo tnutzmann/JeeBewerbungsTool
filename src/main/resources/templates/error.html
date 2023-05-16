@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta charset="UTF-8">
     <title>Jinba - Error</title>
-    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+    <link th:href="@{/css/coreui/coreui.min.css}" rel="stylesheet">
 </head>
 <body class="bg-light">
 <div class="min-vh-100 d-flex flex-row align-items-center">
@@ -30,7 +30,6 @@
     style="top: 90%">
     <a class="btn btn-outline-primary" th:href="@{/home}">Home</a>
 </div>
-<!-- CoreUI and necessary plugins-->
-<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/js/coreui.bundle.min.js" integrity="sha384-n0qOYeB4ohUPebL1M9qb/hfYkTp4lvnZM6U6phkRofqsMzK29IdkBJPegsyfj/r4" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/coreui/coreui.min.js}"></script>
 </body>
 </html>

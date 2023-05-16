@@ -1,5 +1,6 @@
 package de.jinba.server.entity;
 
+import de.jinba.server.entity.enumuration.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
