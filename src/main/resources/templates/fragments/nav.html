@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:fragment="headerfiles">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+
+</head>
+<body>
+<header class="header header-sticky mb-4" th:fragment="nav">
+    <div class="container-fluid">
+        <ul class="header-nav d-none d-md-flex">
+            <li class="header-brand"><a class="header-brand" th:href="@{/home}">Jinba</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/home}">Home</a></li>
+        </ul>
+        <ul sec:authorize="isAnonymous()" class="header-nav ms-3">
+            <li class="nav-item mx-2"><a class="nav-link" th:href="@{/register}">Register</a></li>
+            <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3" th:href="@{/login}">Login</a></li>
+        </ul>
+        <ul class="header-nav ms-3" sec:authorize="isAuthenticated()">
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link py-0" data-coreui-toggle="dropdown" href="#"
+                   role="button">
+                    <div class="avatar avatar-md bg-primary text-white">
+                        <span th:text="${#authentication.getPrincipal().getFirstName().toUpperCase().charAt(0)}"></span>
+                        <span th:text="${#authentication.getPrincipal().getLastName().toUpperCase().charAt(0)}"></span>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" th:href="@{/profile}">
+                        Profile</a>
+                    <a class="dropdown-item" th:href="@{/logout}">
+                        Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+<script th:src="@{/js/coreui/coreui.min.js}" type="text/javascript"></script>
+</body>
+</html>
