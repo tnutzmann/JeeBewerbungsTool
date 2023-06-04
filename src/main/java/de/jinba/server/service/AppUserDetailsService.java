@@ -6,6 +6,7 @@ import de.jinba.server.dto.PasswordChangeRequest;
 import de.jinba.server.entity.AppUser;
 import de.jinba.server.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppUserDetailsService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -40,6 +42,10 @@ public class AppUserDetailsService implements UserDetailsService {
                 : Optional.empty();
     }
 
+    public boolean isAuthenticated(){
+        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    }
+
     public void changePassword(PasswordChangeRequest passwordChangeRequest) {
         AppUser currentUser = getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change password"));
@@ -56,7 +62,7 @@ public class AppUserDetailsService implements UserDetailsService {
     public boolean isCorrectPassword(String currentPassword) {
         AppUser currentUser = getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change password"));
-        return currentUser.getPassword().equals(passwordEncoder.encode(currentPassword));
+        return passwordEncoder.matches(currentPassword, currentUser.getPassword());
     }
 
     public void changeAccountInformation(AccountInformationChangeRequest accountInformationChangeRequest) {
@@ -75,12 +81,6 @@ public class AppUserDetailsService implements UserDetailsService {
             throw new IllegalStateException("Email already exists");
         }
         currentUser.setEmail(emailChangeRequest.getEmail());
-        appUserRepository.save(currentUser);
-    }
-    public void removeSkill(Long id){
-        AppUser currentUser = getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to remove skill"));
-        currentUser.getSkills().removeIf(skill -> skill.getId().equals(id));
         appUserRepository.save(currentUser);
     }
 }
