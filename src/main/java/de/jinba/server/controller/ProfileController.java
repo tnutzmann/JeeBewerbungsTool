@@ -1,6 +1,8 @@
 package de.jinba.server.controller;
 
 import de.jinba.server.dto.*;
+import de.jinba.server.entity.enumuration.SkillLevel;
+import de.jinba.server.service.SkillService;
 import de.jinba.server.util.ModelConfigurer;
 import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
@@ -24,16 +26,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class ProfileController {
     public static final String SKILLS = "skills";
+    public static final String SKILL_ADD_FORM = "addSkillForm";
     public static final String PASSWORD_FORM = "changePasswordForm";
     public static final String EMAIL_FORM = "changeEmailForm";
     public static final String ACCOUNT_INFORMATION_FORM = "changeAccountInformationForm";
     public static final String BINDING_RESULT_PREFIX = "org.springframework.validation.BindingResult.%s";
     public static final String COMPANY_DESCRIPTION_FORM = "changeCompanyDescriptionForm";
     public static final String COMPANY_DETAILS_FORM = "changeCompanyDetailsForm";
+
     private final AppUserDetailsService appUserDetailsService;
     private final CompanyDetailsService companyDetailsService;
-    @GetMapping("/profile")
-    public String viewProfilePage(Model model) {
+    private final SkillService skillService;
+
+    @GetMapping("/profile/edit")
+    public String viewEditProfilePage(Model model) {
         AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to access profile page"));
         ModelConfigurer configurer = ModelConfigurer.of(model)
@@ -44,18 +50,22 @@ public class ProfileController {
                         currentUser.getLastName(),
                         currentUser.getDetails()));
         if(currentUser.getRole() == Role.DEFAULT_USER){
-            configurer.with(SKILLS, currentUser.getSkills());
+            configurer.with(SKILLS, currentUser.getSkills()
+                            .stream()
+                            .map(AppUserSkillDto::from)
+                            .toList())
+                    .with(SKILL_ADD_FORM, new SkillAddRequest("", SkillLevel.BEGINNER));
         }else {
             Company company = companyDetailsService.findByAdminId(currentUser.getId())
                     .orElseThrow(() -> new IllegalStateException("User does not administrate a company"));
             configurer.with(COMPANY_DETAILS_FORM, new CompanyDetailsChangeRequest(company.getName()))
                     .with(COMPANY_DESCRIPTION_FORM, new CompanyDescriptionChangeRequest(company.getDescription()));
         }
-        return "profile";
+        return "profile-edit";
     }
 
-    @PostMapping("/profile/change/user/password")
-    public String changePassword(@ModelAttribute("changePasswordForm") @Valid PasswordChangeRequest passwordChangeRequest,
+    @PostMapping("/profile/edit/user/password")
+    public String changePassword(@ModelAttribute(PASSWORD_FORM) @Valid PasswordChangeRequest passwordChangeRequest,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
         if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
@@ -68,14 +78,14 @@ public class ProfileController {
             ModelConfigurer.of(redirectAttributes)
                     .with(String.format(BINDING_RESULT_PREFIX, PASSWORD_FORM), bindingResult)
                     .with(PASSWORD_FORM, passwordChangeRequest);
-            return "redirect:/profile";
+            return "redirect:/profile/edit";
         }
         appUserDetailsService.changePassword(passwordChangeRequest);
-        return "redirect:/profile?success=Changed Password!";
+        return "redirect:/profile/edit?success=Changed Password!";
     }
 
-    @PostMapping("/profile/change/user/email")
-    public String changeEmail(@ModelAttribute("changeEmailForm") @Valid EmailChangeRequest emailChangeRequest,
+    @PostMapping("/profile/edit/user/email")
+    public String changeEmail(@ModelAttribute(EMAIL_FORM) @Valid EmailChangeRequest emailChangeRequest,
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         if (appUserDetailsService.existsByUsername(emailChangeRequest.getEmail())) {
@@ -85,60 +95,76 @@ public class ProfileController {
             ModelConfigurer.of(redirectAttributes)
                     .with(String.format(BINDING_RESULT_PREFIX, EMAIL_FORM), bindingResult)
                     .with(EMAIL_FORM, emailChangeRequest);
-            return "redirect:/profile";
+            return "redirect:/profile/edit";
         }
         appUserDetailsService.changeEmail(emailChangeRequest);
-        return "redirect:/profile?success=Changed Email!";
+        return "redirect:/profile/edit?success=Changed Email!";
     }
 
 
 
-    @PostMapping("/profile/change/user/account-information")
-    public String changeAccountInformation(@ModelAttribute("changeAccountInformationForm") @Valid AccountInformationChangeRequest accountInformationChangeRequest,
+    @PostMapping("/profile/edit/user/account-information")
+    public String changeAccountInformation(@ModelAttribute(ACCOUNT_INFORMATION_FORM) @Valid AccountInformationChangeRequest accountInformationChangeRequest,
                                            BindingResult bindingResult,
                                            RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             ModelConfigurer.of(redirectAttributes)
                     .with(String.format(BINDING_RESULT_PREFIX, ACCOUNT_INFORMATION_FORM), bindingResult)
                     .with(ACCOUNT_INFORMATION_FORM, accountInformationChangeRequest);
-            return "redirect:/profile";
+            return "redirect:/profile/edit";
         }
         appUserDetailsService.changeAccountInformation(accountInformationChangeRequest);
-        return "redirect:/profile?success=Changed Account Information!";
+        return "redirect:/profile/edit?success=Changed Account Information!";
     }
 
-    @PostMapping("/profile/change/company/description")
-    public String changeCompanyDescription(@ModelAttribute("changeCompanyDescriptionForm") @Valid CompanyDescriptionChangeRequest companyDescriptionChangeRequest,
+    @PostMapping("/profile/edit/company/description")
+    public String changeCompanyDescription(@ModelAttribute(COMPANY_DESCRIPTION_FORM) @Valid CompanyDescriptionChangeRequest companyDescriptionChangeRequest,
                                            BindingResult bindingResult,
                                            RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             ModelConfigurer.of(redirectAttributes)
                     .with(String.format(BINDING_RESULT_PREFIX, COMPANY_DESCRIPTION_FORM), bindingResult)
                     .with(COMPANY_DESCRIPTION_FORM, companyDescriptionChangeRequest);
-            return "redirect:/profile";
+            return "redirect:/profile/edit";
         }
         companyDetailsService.changeDescription(companyDescriptionChangeRequest);
-        return "redirect:/profile?success=Changed Company Description!";
+        return "redirect:/profile/edit?success=Changed Company Description!";
     }
 
-    @PostMapping("/profile/change/company/details")
-    public String changeCompanyDetails(@ModelAttribute("changeCompanyDetailsForm") @Valid CompanyDetailsChangeRequest companyDetailsChangeRequest,
+    @PostMapping("/profile/edit/company/details")
+    public String changeCompanyDetails(@ModelAttribute(COMPANY_DETAILS_FORM) @Valid CompanyDetailsChangeRequest companyDetailsChangeRequest,
                                        BindingResult bindingResult,
                                        RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             ModelConfigurer.of(redirectAttributes)
                     .with(String.format(BINDING_RESULT_PREFIX, COMPANY_DETAILS_FORM), bindingResult)
                     .with(COMPANY_DETAILS_FORM, companyDetailsChangeRequest);
-            return "redirect:/profile";
+            return "redirect:/profile/edit";
         }
         companyDetailsService.changeCompanyDetails(companyDetailsChangeRequest);
-        return "redirect:/profile?success=Changed Company Details!";
+        return "redirect:/profile/edit?success=Changed Company Details!";
     }
 
-    @GetMapping("/profile/change/skills/remove/{id}")
-    public String removeSkill(@PathVariable("id") Long id,
-                              Model model) {
-        appUserDetailsService.removeSkill(id);
-        return String.format("redirect:/%s?success=Removed Skill!", viewProfilePage(model));
+    @PostMapping("/profile/edit/skills/add")
+    public String addSkill(@ModelAttribute("addSkillForm") @Valid SkillAddRequest skillAddRequest,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+        if(skillService.hasCurrentUserSkill(skillAddRequest.getSkillName())) {
+            bindingResult.rejectValue("skillName", "error.addSkillForm", "Already has skill");
+        }
+        if(bindingResult.hasErrors()) {
+            ModelConfigurer.of(redirectAttributes)
+                    .with(String.format(BINDING_RESULT_PREFIX, SKILL_ADD_FORM), bindingResult)
+                    .with(SKILL_ADD_FORM, skillAddRequest);
+            return "redirect:/profile/edit";
+        }
+        skillService.addSkillToUser(skillAddRequest);
+        return "redirect:/profile/edit?success=Added Skill!";
+    }
+
+    @GetMapping("/profile/edit/skills/remove/{id}")
+    public String removeSkill(@PathVariable("id") Long id) {
+        skillService.removeSkillFromUser(id);
+        return "redirect:/profile/edit?success=Removed Skill!";
     }
 }
