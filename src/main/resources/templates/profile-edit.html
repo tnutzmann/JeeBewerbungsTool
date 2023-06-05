@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" th:if="${param.success}">
+                <span th:text="${param.success}"></span>
+                <button aria-label="Close" class="btn-close" data-coreui-dismiss="alert" type="button"></button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${param.error}">
+                <span th:text="${param.error}"></span>
+                <button aria-label="Close" class="btn-close" data-coreui-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-9">
+            <div class="card mb-4 h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="flex-grow-0 flex-shrink-1">
+                        <h2>Personal Details</h2>
+                    </div>
+                    <form class="d-flex flex-column flex-grow-1 flex-shrink-1" method="post"
+                          th:action="@{/profile/edit/user/account-information}"
+                          th:object="${changeAccountInformationForm}">
+                        <div class="row mb-3 flex-grow-0 flex-shrink-1">
+                            <div class="col">
+                                <label class="form-label" for="firstNameInput">First Name</label>
+                                <input aria-describedby="firstNameInputFeedback" class="form-control"
+                                       id="firstNameInput"
+                                       th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+                                       th:field="*{firstName}"
+                                       type="text"/>
+                                <div class="invalid-feedback" id="firstNameInputFeedback"
+                                     th:if="${#fields.hasErrors('firstName')}">
+                                    <span th:errors="*{firstName}"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="lastNameInput">Last Name</label>
+                                <input aria-describedby="lastNameInputFeedback" class="form-control" id="lastNameInput"
+                                       th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''"
+                                       th:field="*{lastName}"
+                                       type="text"/>
+                                <div class="invalid-feedback" id="lastNameInputFeedback"
+                                     th:if="${#fields.hasErrors('lastName')}">
+                                    <span th:errors="*{lastName}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 flex-shrink-1 flex-grow-1 d-flex flex-column">
+                            <div class="flex-shrink-0 flex-grow-0">
+                                <label class="form-label" for="detailsInput">Details</label>
+                            </div>
+                            <textarea aria-describedby="detailsInputFeedback"
+                                      class="form-control flex-shrink-1 flex-grow-1"
+                                      id="detailsInput"
+                                      style="resize: none;"
+                                      th:classappend="${#fields.hasErrors('details')} ? 'is-invalid' : ''"
+                                      th:field="*{details}"></textarea>
+                            <div class="invalid-feedback" id="detailsInputFeedback"
+                                 th:if="${#fields.hasErrors('details')}">
+                                <span th:errors="*{details}"></span>
+                            </div>
+                        </div>
+                        <div class="flex-grow-0 flex-shrink-1">
+                            <input class="btn btn-primary" type="submit" value="Change Information"/>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Email</h2>
+                    <form method="post" th:action="@{/profile/edit/user/email}" th:object="${changeEmailForm}">
+                        <div class="mb-3">
+                            <label class="form-label" for="emailInput">Email Address</label>
+                            <input aria-describedby="emailInputFeedback" class="form-control" id="emailInput"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                   th:field="*{email}"
+                                   type="email"/>
+                            <div class="invalid-feedback" id="emailInputFeedback" th:if="${#fields.hasErrors('email')}">
+                                <span th:errors="*{email}"></span>
+                            </div>
+                        </div>
+                        <div class="mt-auto d-flex align-items-baseline">
+                            <input class="btn btn-primary" type="submit" value="Change Email"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>Password</h2>
+                    <form method="post" th:action="@{/profile/edit/user/password}" th:object="${changePasswordForm}">
+                        <div class="mb-3">
+                            <label class="form-label" for="currentPasswordInput">Current Password</label>
+                            <input aria-describedby="currentPasswordInputFeedback" class="form-control"
+                                   id="currentPasswordInput"
+                                   th:classappend="${#fields.hasErrors('currentPassword')} ? 'is-invalid' : ''"
+                                   th:field="*{currentPassword}"
+                                   type="password"/>
+                            <div class="invalid-feedback" id="currentPasswordInputFeedback"
+                                 th:if="${#fields.hasErrors('currentPassword')}">
+                                <span th:errors="*{currentPassword}"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="newPasswordInput">New Password</label>
+                            <input aria-describedby="newPasswordInputFeedback" class="form-control"
+                                   id="newPasswordInput"
+                                   th:classappend="${#fields.hasErrors('newPassword')} ? 'is-invalid' : ''"
+                                   th:field="*{newPassword}"
+                                   type="password"/>
+                            <div class="invalid-feedback" id="newPasswordInputFeedback"
+                                 th:if="${#fields.hasErrors('newPassword')}">
+                                <span th:errors="*{newPassword}"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="confirmPasswordInput">Confirm Password</label>
+                            <input aria-describedby="currentPasswordInputFeedback" class="form-control"
+                                   id="confirmPasswordInput"
+                                   th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''"
+                                   th:field="*{confirmPassword}"
+                                   type="password"/>
+                            <div class="invalid-feedback" id="confirmPasswordInputFeedback"
+                                 th:if="${#fields.hasErrors('confirmPassword')}">
+                                <span th:errors="*{confirmPassword}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="btn btn-primary" type="submit" value="Change Password"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3" sec:authorize="hasRole('ROLE_DEFAULT_USER')">
+        <div class="col-9">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2>Skills</h2>
+                    <div class="row row-cols-4">
+                        <div class="col mb-3" th:each="skill : ${skills}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${skill.skillName}"></h5>
+                                    <p class="card-text">
+                                        <strong>Level: </strong>
+                                        <span th:text="${skill.skillLevel.skillLevel}"></span>
+                                    </p>
+                                    <a class="btn btn-outline-danger"
+                                       th:href="'/profile/edit/skills/remove/' + ${skill.id}">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 h-100">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2>Add Skill</h2>
+                    <form method="post" th:action="@{/profile/edit/skills/add}" th:object="${addSkillForm}">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label" for="skillNameInput">Name</label>
+                                <input aria-describedby="skillNameInputFeedback" class="form-control"
+                                       id="skillNameInput"
+                                       th:classappend="${#fields.hasErrors('skillName')} ? 'is-invalid' : ''"
+                                       th:field="*{skillName}"
+                                       type="text"/>
+                                <div class="invalid-feedback" id="skillNameInputFeedback"
+                                     th:if="${#fields.hasErrors('skillName')}">
+                                    <span th:errors="*{skillName}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label" for="skillAddLevelInput">Level</label>
+                                <select class="form-select" id="skillAddLevelInput" th:field="*{level}">
+                                    <option th:each="opt : ${T(de.jinba.server.entity.enumuration.SkillLevel).values()}"
+                                            th:text="${opt.skillLevel()}" th:value="${opt}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="btn btn-primary" type="submit" value="Add Skill"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4" sec:authorize="hasRole('ROLE_COMPANY_USER')">
+        <div class="col-3 d-flex">
+            <div class="card flex-grow-1 flex-shrink-1">
+                <div class="card-body">
+                    <h2>Company Details</h2>
+                    <form method="post" th:action="@{/profile/edit/company/details}"
+                          th:object="${changeCompanyDetailsForm}">
+                        <div class="mb-3">
+                            <label class="form-label" for="companyNameInput">Name</label>
+                            <input aria-describedby="companyNameInputFeedback" class="form-control"
+                                   id="companyNameInput"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                   th:field="*{name}"
+                                   type="text"/>
+                            <div class="invalid-feedback" id="companyNameInputFeedback"
+                                 th:if="${#fields.hasErrors('name')}">
+                                <span th:errors="*{name}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="btn btn-primary" type="submit" value="Change Company Details"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Company Description</h2>
+                    <form method="post" th:action="@{/profile/edit/company/description}"
+                          th:object="${changeCompanyDescriptionForm}">
+                        <div class="mb-3 d-flex flex-column">
+                            <div class="flex-shrink-0 flex-grow-0">
+                                <label class="form-label" for="companyDescriptionInput">Details</label>
+                            </div>
+                            <textarea aria-describedby="companyDescriptionInputFeedback"
+                                      class="form-control flex-shrink-1 flex-grow-1"
+                                      id="companyDescriptionInput"
+                                      style="resize: none;"
+                                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                                      th:field="*{description}"></textarea>
+                            <div class="invalid-feedback" id="companyDescriptionInputFeedback"
+                                 th:if="${#fields.hasErrors('description')}">
+                                <span th:errors="*{description}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="btn btn-primary" type="submit" value="Change Description"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<footer th:replace="~{/fragments/footer.html :: footer}"></footer>-->
+<script th:src="@{/js/coreui/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/coreui/coreui.min.js}" type="text/javascript"></script>
+</body>
+</html>
