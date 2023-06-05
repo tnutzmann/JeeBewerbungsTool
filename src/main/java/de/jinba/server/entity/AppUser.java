@@ -39,18 +39,14 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_skill",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private List<Skill> skills;
+    @OneToMany
+    @JoinColumn(referencedColumnName = "id", name = "app_user_id")
+    private List<AppUserSkill> skills;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.role()));
+        authorities.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role.role())));
         return authorities;
     }
 
