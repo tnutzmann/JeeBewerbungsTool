@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="footerfiles">
+  <meta charset="UTF-8"/>
+  <title>Jinba - contact information</title>
+  <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+
+</head>
+<body>
+<footer class="fixed-bottom text-center text-lg-start text-white" style="background-color: #3e4551" th:fragment="contact">
+
+<!-- Section: Links -->
+<!-- Section: Social media -->
+<section class="mb-2 mt-2 text-center">
+  <!-- Facebook -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+      <img class="w-75 h-75" th:src="@{/svg/cib-facebook.svg}" src="" alt="facebook">
+  </a>
+  <!-- Twitter -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+    <img class="w-75 h-75" th:src="@{/svg/cib-twitter.svg}" src="" alt="twitter">
+  </a>
+  <!-- Google -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+   <img class="w-75 h-75" th:src="@{/svg/cib-google.svg}" src="" alt="google">
+  </a>
+  <!-- Instagram -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+     <img class="w-75 h-75" th:src="@{/svg/cib-instagram.svg}" src="" alt="instagram">
+  </a>
+  <!-- Linkedin -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+    <img class="w-75 h-75" th:src="@{/svg/cib-linkedin.svg}" src="" alt="linkedin">
+  </a>
+  <!-- Github -->
+  <a class="btn btn-ghost-light pb-2" th:href="@{/home}" role="button">
+    <img class="w-75 h-75" th:src="@{/svg/cib-github.svg}" src="" alt="github">
+  </a>
+</section>
+<!-- Section: Social media -->
+<!-- Copyright -->
+<div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.2)">
+  © 2023 Copyright:
+  <a class="text-white" href="https://jinba.com/">
+    Jinba.com
+  </a>
+</div>
+<!-- Copyright -->
+</footer>
+<script th:src="@{/js/coreui/coreui.min.js}" type="text/javascript"></script>
+</body>
+</html>
