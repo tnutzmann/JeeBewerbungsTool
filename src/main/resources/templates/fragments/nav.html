@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:fragment="headerfiles">
     <meta charset="UTF-8"/>
+    <title>Jinba - Navbar</title>
     <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
 
 </head>
 <body>
-<header class="header header-sticky mb-4" th:fragment="nav">
+<header class="header header-sticky" th:fragment="nav">
     <div class="container-fluid">
         <ul class="header-nav d-none d-md-flex">
             <li class="header-brand"><a class="header-brand" th:href="@{/home}">Jinba</a></li>
