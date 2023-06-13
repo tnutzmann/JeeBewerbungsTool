@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Home</title>
+    <link th:href="@{/css/coreui/coreui.min.css}" rel="stylesheet">
+
+</head>
+<body class="bg-light min-vh-100 min">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+
+<!-- Hero -->
+
+<div class="bg-image text-center"
+     style="background-image: url('/img/modern-office-design.png'); background-position: center">
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.5); height: 600px">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-white p-3">
+                <h1 class="mb-3">The job agency that you can trust</h1>
+                <h4 class="mb-3">We connect employees with companies</h4>
+                <a class="btn btn-primary px-3" th:href="@{/register}" role="button">register now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hero -->
+<div class="fixed-bottom" th:insert="~{fragments/contact_info.html :: contact}"></div>
+<script th:replace="fragments/scripts :: scripts"></script>
+</body>
+</html>
