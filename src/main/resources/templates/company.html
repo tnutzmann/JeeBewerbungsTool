@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Company</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3" style="position: relative; width: 100%;
+                    height: 0; padding-bottom: 100%;border-radius: 50%;
+                    background-image: url('/img/modern-office-design.png'); background-position: center">
+                        <!--<img th:src="@{/img/modern-office-design.png}" class="overflow-hidden">-->
+                    </div>
+                    <div>
+                        <h2><span th:text="${company.name}"></span></h2>
+                        <p>Email: <span th:text="${company.admin.email}"></span></p>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center" th:if="${isOwnProfile}">
+                        <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="content" th:text="${company.description}"></div>
+                    <script th:src="@{/js/marked.min.js}"></script>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        let description = /*[[${company.description}]]*/ 'Description';
+                        document.getElementById('content').innerHTML =
+                            marked.parse(description);
+                        /*]]>*/
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Job offers</h2>
+                    <div th:if="${company.jobOffers.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This company does not have any Job Offers</span>
+                    </div>
+                    <div class="container">
+                        <div th:each="offer : ${company.jobOffers}" class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3 th:text="${offer.title}"></h3>
+                                        <p th:text="${offer.location}"></p>
+                                        <a th:href="'/offer/' + ${offer.id} " class="btn btn-outline-primary">Go To</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/scripts :: scripts}"></script>
+</body>
+</html>
