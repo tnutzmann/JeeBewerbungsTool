@@ -5,6 +5,7 @@ import de.jinba.server.dto.CompanyDetailsChangeRequest;
 import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.enumuration.Role;
+import de.jinba.server.exception.EntityNotFoundException;
 import de.jinba.server.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,11 @@ public class CompanyDetailsService {
             throw new IllegalStateException("User does not administrate a company");
         return findByAdminId(currentUser.getId())
                 .orElseThrow(() -> new IllegalStateException("User does not administrate a company, even though he is a COMPANY_USER"));
+    }
+
+    public Company getById(String id){
+        return companyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Could not find company with id: %s", id)));
     }
 
 
