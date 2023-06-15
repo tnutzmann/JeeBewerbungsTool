@@ -4,6 +4,7 @@ import de.jinba.server.dto.AccountInformationChangeRequest;
 import de.jinba.server.dto.EmailChangeRequest;
 import de.jinba.server.dto.PasswordChangeRequest;
 import de.jinba.server.entity.AppUser;
+import de.jinba.server.exception.EntityNotFoundException;
 import de.jinba.server.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,15 @@ public class AppUserDetailsService implements UserDetailsService {
 
     public boolean isAuthenticated(){
         return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    }
+
+    public AppUser getById(String id){
+        return appUserRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Could not find user with id: %s", id)));
+    }
+
+    public boolean existsById(String id){
+        return appUserRepository.existsById(id);
     }
 
     public void changePassword(PasswordChangeRequest passwordChangeRequest) {

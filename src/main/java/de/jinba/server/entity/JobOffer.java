@@ -1,8 +1,12 @@
 package de.jinba.server.entity;
 
+import de.jinba.server.entity.enumuration.JobOfferStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,19 +26,17 @@ public class JobOffer {
     private String description;
     @Column(nullable = false)
     private String location;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "job_offer_skill",
-            joinColumns = @JoinColumn(name = "job_offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private List<Skill> skills;
+    @OneToMany(mappedBy = "jobOffer")
+    private List<JobOfferSkill> skills;
 
-    @ManyToMany
-    @JoinTable(
-            name = "job_offer_app_user",
-            joinColumns = @JoinColumn(name = "job_offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "app_user_id")
-    )
-    private List<AppUser> applicants;
+    @OneToMany(mappedBy = "jobOffer")
+    private List<JobApplication> applications;
+
+    @Enumerated(EnumType.ORDINAL)
+    private JobOfferStatus status;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+    private LocalDateTime closedAt;
 }
