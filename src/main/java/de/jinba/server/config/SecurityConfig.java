@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers("/register", "/login").permitAll()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/profile/edit").authenticated()
+                .requestMatchers("/profile/**", "/company/**", "/profile").authenticated()
                 .requestMatchers("/**").permitAll();
         return http.build();
     }

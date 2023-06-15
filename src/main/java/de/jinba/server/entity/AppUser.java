@@ -42,6 +42,8 @@ public class AppUser implements UserDetails {
     @OneToMany
     @JoinColumn(referencedColumnName = "id", name = "app_user_id")
     private List<AppUserSkill> skills;
+    @OneToMany(mappedBy = "applicant")
+    private List<JobApplication> jobApplications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
