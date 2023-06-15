@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+  <header th:replace="~{fragments/nav.html :: nav}"></header>
+  <div class="container">
+      <h1>Dashboard</h1>
+  </div>
+<script th:src="@{/js/coreui/popper.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/coreui/coreui.min.js}" type="text/javascript"></script>
+</body>
+</html>
