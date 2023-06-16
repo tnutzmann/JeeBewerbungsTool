@@ -11,7 +11,8 @@
     <div class="container-fluid">
         <ul class="header-nav d-none d-md-flex">
             <li class="header-brand"><a class="header-brand" th:href="@{/home}">Jinba</a></li>
-            <li class="nav-item"><a class="nav-link" th:href="@{/home}">Home</a></li>
+            <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/home}">Home</a></li>
+            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/dashboard}">Dashboard</a></li>
         </ul>
         <ul sec:authorize="isAnonymous()" class="header-nav ms-3">
             <li class="nav-item mx-2"><a class="nav-link" th:href="@{/register}">Register</a></li>
