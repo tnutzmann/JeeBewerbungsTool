@@ -34,7 +34,22 @@
               <div class="row mt-3">
                   <div class="card">
                       <div class="card-body">
-                        INFOS
+                          <h2>Open Applications</h2>
+                          <div th:if="${profile.jobApplications.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
+                              <span>You don't have any open Job Applications.</span>
+                          </div>
+                          <div class="container">
+                              <div th:each="application : ${profile.jobApplications}" class="row">
+                                  <div class="col-6">
+                                      <ul class="px-2 mb-1">
+                                          <li th:text="${application.jobOffer.title}"></li>
+                                      </ul>
+                                  </div>
+                                  <div class="col-6 d-flex align-items-center justify-content-end flex-row">
+                                      <span class="text-muted" th:text="${application.status}"></span>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
                   </div>
               </div>
