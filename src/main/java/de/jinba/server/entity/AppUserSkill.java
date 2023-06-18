@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class AppUserSkill {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "app_user_id")
