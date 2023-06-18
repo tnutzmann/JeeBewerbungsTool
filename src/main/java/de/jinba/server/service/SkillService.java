@@ -60,6 +60,11 @@ public class SkillService {
         return skillRepository.save(skill);
     }
 
+    public Skill getSkillAndCreateIfNotExists(String name){
+        Optional<Skill> skill = skillRepository.findByName(name);
+        return skill.orElseGet(() -> createSkill(name));
+    }
+
 
     public boolean hasCurrentUserSkill(String name){
         AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
