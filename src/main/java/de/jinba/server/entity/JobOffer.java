@@ -31,6 +31,8 @@ public class JobOffer {
 
     @OneToMany(mappedBy = "jobOffer")
     private List<JobApplication> applications;
+    @ManyToOne
+    private Company company;
 
     @Enumerated(EnumType.ORDINAL)
     private JobOfferStatus status;

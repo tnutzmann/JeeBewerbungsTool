@@ -21,10 +21,9 @@ public class Company {
     @Column(nullable = false)
     private String description;
     @OneToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
     @CompanyAdminConstraint
     private AppUser admin;
     @OneToMany
-    @JoinColumn(name = "job_offer_company", referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id", name = "company_id")
     private List<JobOffer> jobOffers;
 }
