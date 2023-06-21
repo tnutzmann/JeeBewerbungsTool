@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Jinba - Dashboard</title>
@@ -25,7 +26,7 @@
                               <h2><span th:text="${profile.firstName}"></span> <span th:text="${profile.lastName}"></span></h2>
                               <p>Email: <span th:text="${profile.email}"></span></p>
                           </div>
-                          <div class="d-flex justify-content-center align-items-center" th:if="${isOwnProfile}">
+                          <div class="d-flex justify-content-center align-items-center">
                               <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
                           </div>
                       </div>
