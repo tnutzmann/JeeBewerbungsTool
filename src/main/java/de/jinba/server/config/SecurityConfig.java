@@ -1,5 +1,6 @@
 package de.jinba.server.config;
 
+import de.jinba.server.entity.enumuration.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +47,7 @@ public class SecurityConfig {
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/profile/edit").authenticated()
                 .requestMatchers("/profile/**", "/company/**", "/profile").authenticated()
+                .requestMatchers("/offer/create").hasRole(Role.COMPANY_USER.role())
                 .requestMatchers("/**").permitAll();
         return http.build();
     }
