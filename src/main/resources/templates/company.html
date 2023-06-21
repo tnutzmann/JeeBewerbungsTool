@@ -50,16 +50,20 @@
                         <span>This company does not have any Job Offers</span>
                     </div>
                     <div class="container">
-                        <div th:each="offer : ${company.jobOffers}" class="row">
+                        <div th:each="offer, itStat : ${company.jobOffers}" th:unless="${itStat.count > 5}" class="row mb-3">
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
                                         <h3 th:text="${offer.title}"></h3>
                                         <p th:text="${offer.location}"></p>
-                                        <a th:href="'/offer/' + ${offer.id} " class="btn btn-outline-primary">Go To</a>
+                                        <a th:href="'/offer/' + ${offer.id} " class="btn btn-outline-primary me-2">Go To</a>
+                                        <a th:if="${isOwnProfile}" th:href="'/offer/' + ${offer.id} + '/edit' " class="btn btn-outline-secondary">Edit</a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center align-items-center">
+                            <a th:href="'/company/' + ${company.id} + '/offer'" class="btn btn-outline-primary">See more detailed</a>
                         </div>
                     </div>
 
