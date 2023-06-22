@@ -132,7 +132,8 @@ public class ProfileManagementController {
                     .with(COMPANY_DESCRIPTION_FORM, companyDescriptionChangeRequest);
             return "redirect:/profile/edit";
         }
-        companyDetailsService.changeDescription(companyDescriptionChangeRequest);
+        Company company = companyDetailsService.findCompanyOfCurrentUser();
+        companyDetailsService.changeDescription(company, companyDescriptionChangeRequest);
         return "redirect:/profile/edit?success=Changed Company Description!";
     }
 
@@ -146,7 +147,8 @@ public class ProfileManagementController {
                     .with(COMPANY_DETAILS_FORM, companyDetailsChangeRequest);
             return "redirect:/profile/edit";
         }
-        companyDetailsService.changeCompanyDetails(companyDetailsChangeRequest);
+        Company company = companyDetailsService.findCompanyOfCurrentUser();
+        companyDetailsService.changeCompanyDetails(company, companyDetailsChangeRequest);
         return "redirect:/profile/edit?success=Changed Company Details!";
     }
 
@@ -163,13 +165,15 @@ public class ProfileManagementController {
                     .with(SKILL_ADD_FORM, skillAddRequest);
             return "redirect:/profile/edit";
         }
-        skillService.addSkillToUser(skillAddRequest);
+        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
+        skillService.addSkillToUser(user, skillAddRequest);
         return "redirect:/profile/edit?success=Added Skill!";
     }
 
     @GetMapping("/profile/edit/skills/remove/{id}")
     public String removeSkill(@PathVariable("id") Long id) {
-        skillService.removeSkillFromUser(id);
+        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
+        skillService.removeSkillFromUser(user, id);
         return "redirect:/profile/edit?success=Removed Skill!";
     }
 }

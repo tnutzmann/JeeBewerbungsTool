@@ -25,16 +25,15 @@ public class CompanyDetailsService {
         return companyRepository.findByAdmin_Id(id);
     }
 
-    public void changeCompanyDetails(CompanyDetailsChangeRequest request) {
+    public void changeCompanyDetails(Company company, CompanyDetailsChangeRequest request) {
         if(existsByName(request.getName()))
             throw new IllegalStateException(String.format("Company with name %s already exists", request.getName()));
-        Company company = findCompanyOfCurrentUser();
         company.setName(request.getName());
         companyRepository.save(company);
     }
 
-    public void changeDescription(CompanyDescriptionChangeRequest request) {
-        Company company = findCompanyOfCurrentUser();
+    public void changeDescription(Company company,
+                                  CompanyDescriptionChangeRequest request) {
         company.setDescription(request.getDescription());
         companyRepository.save(company);
     }
