@@ -132,7 +132,8 @@ public class ProfileManagementController {
                     .with(COMPANY_DESCRIPTION_FORM, companyDescriptionChangeRequest);
             return "redirect:/profile/edit";
         }
-        companyDetailsService.changeDescription(companyDescriptionChangeRequest);
+        Company company = companyDetailsService.findCompanyOfCurrentUser();
+        companyDetailsService.changeDescription(company, companyDescriptionChangeRequest);
         return "redirect:/profile/edit?success=Changed Company Description!";
     }
 
@@ -146,7 +147,8 @@ public class ProfileManagementController {
                     .with(COMPANY_DETAILS_FORM, companyDetailsChangeRequest);
             return "redirect:/profile/edit";
         }
-        companyDetailsService.changeCompanyDetails(companyDetailsChangeRequest);
+        Company company = companyDetailsService.findCompanyOfCurrentUser();
+        companyDetailsService.changeCompanyDetails(company, companyDetailsChangeRequest);
         return "redirect:/profile/edit?success=Changed Company Details!";
     }
 
