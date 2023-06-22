@@ -58,6 +58,7 @@
                                         <p th:text="${offer.location}"></p>
                                         <a th:href="'/offer/' + ${offer.id} " class="btn btn-outline-primary me-2">Go To</a>
                                         <a th:if="${isOwnProfile}" th:href="'/offer/' + ${offer.id} + '/edit' " class="btn btn-outline-secondary">Edit</a>
+                                        <a sec:authorize="hasRole('DEFAULT_USER')" th:href="'/offer/' + ${offer.id} + '/apply' " class="btn btn-outline-secondary">Apply</a>
                                     </div>
                                 </div>
                             </div>

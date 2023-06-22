@@ -56,41 +56,34 @@ public class AppUserDetailsService implements UserDetailsService {
         return appUserRepository.existsById(id);
     }
 
-    public void changePassword(PasswordChangeRequest passwordChangeRequest) {
-        AppUser currentUser = getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change password"));
+    public void changePassword(AppUser appUser,
+                               PasswordChangeRequest passwordChangeRequest) {
         if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
             throw new IllegalStateException("Passwords do not match");
         }
-        if (!isCorrectPassword(passwordChangeRequest.getCurrentPassword())) {
+        if (!isCorrectPassword(appUser, passwordChangeRequest.getCurrentPassword())) {
             throw new IllegalStateException("Current password is incorrect");
         }
-        currentUser.setPassword(passwordChangeRequest.getNewPassword());
-        appUserRepository.save(currentUser);
+        appUser.setPassword(passwordChangeRequest.getNewPassword());
+        appUserRepository.save(appUser);
     }
 
-    public boolean isCorrectPassword(String currentPassword) {
-        AppUser currentUser = getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change password"));
-        return passwordEncoder.matches(currentPassword, currentUser.getPassword());
+    public boolean isCorrectPassword(AppUser user, String currentPassword) {
+        return passwordEncoder.matches(currentPassword, user.getPassword());
     }
 
-    public void changeAccountInformation(AccountInformationChangeRequest accountInformationChangeRequest) {
-        AppUser currentUser = getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change account information"));
-        currentUser.setFirstName(accountInformationChangeRequest.getFirstName());
-        currentUser.setLastName(accountInformationChangeRequest.getLastName());
-        currentUser.setDetails(accountInformationChangeRequest.getDetails());
-        appUserRepository.save(currentUser);
+    public void changeAccountInformation(AppUser user, AccountInformationChangeRequest accountInformationChangeRequest) {
+        user.setFirstName(accountInformationChangeRequest.getFirstName());
+        user.setLastName(accountInformationChangeRequest.getLastName());
+        user.setDetails(accountInformationChangeRequest.getDetails());
+        appUserRepository.save(user);
     }
 
-    public void changeEmail(EmailChangeRequest emailChangeRequest) {
-        AppUser currentUser = getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to change email"));
+    public void changeEmail(AppUser user, EmailChangeRequest emailChangeRequest) {
         if (existsByUsername(emailChangeRequest.getEmail())) {
             throw new IllegalStateException("Email already exists");
         }
-        currentUser.setEmail(emailChangeRequest.getEmail());
-        appUserRepository.save(currentUser);
+        user.setEmail(emailChangeRequest.getEmail());
+        appUserRepository.save(user);
     }
 }
