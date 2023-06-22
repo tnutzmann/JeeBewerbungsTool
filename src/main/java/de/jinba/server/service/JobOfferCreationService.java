@@ -23,9 +23,7 @@ public class JobOfferCreationService {
     private final CompanyDetailsService companyDetailsService;
     private final SkillService skillService;
     @Transactional
-    public JobOffer addNewJobOffer(JobOfferCreationRequest request){
-        Company company = companyDetailsService.findCompanyOfCurrentUser();
-
+    public JobOffer addNewJobOffer(Company company, JobOfferCreationRequest request){
         JobOffer jobOffer = JobOffer.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
