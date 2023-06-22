@@ -20,24 +20,19 @@ public class SkillService {
     private final SkillRepository skillRepository;
     private final AppUserSkillRepository appUserSkillRepository;
 
-    public void removeSkillFromUser(Long id){
-        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to remove skill"));
+    public void removeSkillFromUser(AppUser user, Long id){
         appUserSkillRepository.deleteById(id);
-        appUserRepository.save(currentUser);
+        appUserRepository.save(user);
     }
 
-    public void addSkillToUser(SkillAddRequest request) {
-        if(!appUserDetailsService.isAuthenticated()){
-            throw new IllegalStateException("Unauthenticated user attempted to add skill");
-        }
+    public void addSkillToUser(AppUser user, SkillAddRequest request) {
         Optional<Skill> existingSkill = skillRepository.findByName(request.getSkillName());
         if (existingSkill.isPresent()){
             if (hasCurrentUserSkill(request.getSkillName())){
                 throw new IllegalStateException("User already has skill");
             }
             AppUserSkill appUserSkill = AppUserSkill.builder()
-                    .appUser(appUserDetailsService.getCurrentAuthenticatedUser().get())
+                    .appUser(user)
                     .level(request.getLevel())
                     .skill(existingSkill.get())
                     .build();
@@ -45,7 +40,7 @@ public class SkillService {
         }else{
             Skill createdSkill = createSkill(request.getSkillName());
             AppUserSkill appUserSkill = AppUserSkill.builder()
-                    .appUser(appUserDetailsService.getCurrentAuthenticatedUser().get())
+                    .appUser(user)
                     .level(request.getLevel())
                     .skill(createdSkill)
                     .build();

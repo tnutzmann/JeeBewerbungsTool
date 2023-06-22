@@ -165,13 +165,15 @@ public class ProfileManagementController {
                     .with(SKILL_ADD_FORM, skillAddRequest);
             return "redirect:/profile/edit";
         }
-        skillService.addSkillToUser(skillAddRequest);
+        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
+        skillService.addSkillToUser(user, skillAddRequest);
         return "redirect:/profile/edit?success=Added Skill!";
     }
 
     @GetMapping("/profile/edit/skills/remove/{id}")
     public String removeSkill(@PathVariable("id") Long id) {
-        skillService.removeSkillFromUser(id);
+        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
+        skillService.removeSkillFromUser(user, id);
         return "redirect:/profile/edit?success=Removed Skill!";
     }
 }
