@@ -68,10 +68,11 @@ public class ProfileManagementController {
     public String changePassword(@ModelAttribute(PASSWORD_FORM) @Valid PasswordChangeRequest passwordChangeRequest,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
         if (!passwordChangeRequest.getNewPassword().equals(passwordChangeRequest.getConfirmPassword())) {
             bindingResult.rejectValue("confirmPassword", "error.changePasswordForm", "Passwords do not match");
         }
-        if(!appUserDetailsService.isCorrectPassword(passwordChangeRequest.getCurrentPassword())) {
+        if(!appUserDetailsService.isCorrectPassword(currentUser, passwordChangeRequest.getCurrentPassword())) {
             bindingResult.rejectValue("currentPassword", "error.changePasswordForm", "Current password is incorrect");
         }
         if (bindingResult.hasErrors()) {
@@ -80,7 +81,7 @@ public class ProfileManagementController {
                     .with(PASSWORD_FORM, passwordChangeRequest);
             return "redirect:/profile/edit";
         }
-        appUserDetailsService.changePassword(passwordChangeRequest);
+        appUserDetailsService.changePassword(currentUser, passwordChangeRequest);
         return "redirect:/profile/edit?success=Changed Password!";
     }
 
@@ -97,7 +98,9 @@ public class ProfileManagementController {
                     .with(EMAIL_FORM, emailChangeRequest);
             return "redirect:/profile/edit";
         }
-        appUserDetailsService.changeEmail(emailChangeRequest);
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
+                .orElseThrow();
+        appUserDetailsService.changeEmail(currentUser, emailChangeRequest);
         return "redirect:/profile/edit?success=Changed Email!";
     }
 
@@ -113,7 +116,9 @@ public class ProfileManagementController {
                     .with(ACCOUNT_INFORMATION_FORM, accountInformationChangeRequest);
             return "redirect:/profile/edit";
         }
-        appUserDetailsService.changeAccountInformation(accountInformationChangeRequest);
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
+                        .orElseThrow();
+        appUserDetailsService.changeAccountInformation(currentUser, accountInformationChangeRequest);
         return "redirect:/profile/edit?success=Changed Account Information!";
     }
 

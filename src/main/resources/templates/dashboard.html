@@ -32,22 +32,24 @@
                       </div>
                   </div>
               </div>
-              <div class="row mt-3">
+              <div class="row mt-3" sec:authorize="hasRole('DEFAULT_USER')">
                   <div class="card">
                       <div class="card-body">
                           <h2>Open Applications</h2>
                           <div th:if="${profile.jobApplications.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
                               <span>You don't have any open Job Applications.</span>
                           </div>
+                          <hr>
                           <div class="container">
-                              <div th:each="application : ${profile.jobApplications}" class="row">
-                                  <div class="col-6">
-                                      <ul class="px-2 mb-1">
-                                          <li th:text="${application.jobOffer.title}"></li>
-                                      </ul>
+                              <div th:each="jobApplication : ${profile.jobApplications}" class="row">
+                                  <div class="col-6 d-flex align-items-center justify-content-start flex-row">
+                                      <span th:text="${jobApplication.jobOffer.title}"></span>
                                   </div>
-                                  <div class="col-6 d-flex align-items-center justify-content-end flex-row">
-                                      <span class="text-muted" th:text="${application.status}"></span>
+                                  <div class="col-3 d-flex align-items-center justify-content-end flex-row">
+                                      <span class="text-muted" th:text="${jobApplication.status}"></span>
+                                  </div>
+                                  <div class="col-3 d-flex align-items-center justify-content-end flex-row">
+                                      <a class="me-1 btn btn-outline-secondary" th:href="'/offer/' + ${jobApplication.jobOffer.id}">Go</a>
                                   </div>
                               </div>
                           </div>
