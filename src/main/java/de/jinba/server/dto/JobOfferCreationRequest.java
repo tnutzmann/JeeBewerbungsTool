@@ -20,6 +20,8 @@ public class JobOfferCreationRequest implements Serializable {
     @NotEmpty(message = "Cannot be empty")
     private String location;
     private List<JobOfferSkillDto> skills;
+
+    /*
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -28,5 +30,5 @@ public class JobOfferCreationRequest implements Serializable {
     public static class JobOfferSkillDto implements Serializable {
         private String name;
         private SkillLevel level;
-    }
+    } */
 }
