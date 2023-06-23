@@ -31,10 +31,9 @@ public class JobOfferEditRequest implements Serializable {
         this.description = jobOffer.getDescription();
         this.location = jobOffer.getLocation();
 
-        this.skills = new ArrayList<>();
-        for(JobOfferSkill jos : jobOffer.getSkills()) {
-            JobOfferSkillDto josDto = new JobOfferSkillDto(jos.getSkill().getName(), jos.getLevel());
-            this.skills.add(josDto);
-        }
+        this.skills = jobOffer.getSkills()
+                .stream()
+                .map(jos -> new JobOfferSkillDto(jos.getSkill().getName(), jos.getLevel()))
+                .toList();
     }
 }

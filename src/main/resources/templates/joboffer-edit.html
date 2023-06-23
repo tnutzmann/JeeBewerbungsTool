@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Edit JobOffer</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+<form th:object="${jobOfferEditForm}" th:action="${'/offer/'+ id + '/edit'}" method="post">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Edit Job Offer</h2>
+                        <div class="mb-3">
+                            <label for="titleInput" class="form-label">Title</label>
+                            <input id="titleInput" th:field="*{title}" class="form-control" type="text" aria-describedby="titleInputFeedback" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''">
+                            <div id="titleInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                                <span th:errors="*{title}"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="locationInput" class="form-label">Location</label>
+                            <input id="locationInput" type="text" th:field="*{location}" class="form-control"
+                                   aria-describedby="locationInputFeedback"
+                                   th:classappend="${#fields.hasErrors('location')} ? 'is-invalid' : ''"/>
+                            <div id="locationInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('location')}">
+                                <span th:errors="*{location}"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionInput" class="form-label">Description</label>
+                            <textarea id="descriptionInput" th:field="*{description}" class="form-control"
+                                      aria-describedby="descriptionInputFeedback"
+                                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"></textarea>
+                            <div id="descriptionInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
+                                <span th:errors="*{description}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="Save" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Skills</h2>
+                        <div id="skills-input-container">
+                            <select class="d-none" id="skillLevelTemplate">
+                                <option th:each="opt : ${T(de.jinba.server.entity.enumuration.SkillLevel).values()}"
+                                        th:text="${opt.years()}" th:value="${opt}">
+                                </option>
+                            </select>
+                            <div class="mb-3" th:each="skill : ${skills}">
+                                <input type="text" th:name="${skill.name}" class="form-control mb-2" placeholder="Skill">
+                            </div>
+                        </div>
+                        <button onclick="addSkillInput()" type="button" class="btn btn-primary">New</button>
+                        <button onclick="removeLastSkillInput()" id="removeLastSkillBtn" type="button" class="btn btn-danger">Remove Last</button>
+                        <script>
+                            let numberOfSkills = 0;
+                            // addSkillInput();
+
+                            function removeLastSkillInput(){
+                                const skillsInputContainer = document.getElementById('skills-input-container');
+                                skillsInputContainer.removeChild(skillsInputContainer.lastChild);
+                                numberOfSkills--;
+                                if(numberOfSkills === 0){
+                                    const removeBtn = document.getElementById('removeLastSkillBtn');
+                                    removeBtn.disabled = true;
+                                }
+                            }
+                            function addSkillInput() {
+                                const skillsInputContainer = document.getElementById('skills-input-container');
+                                const inputContainer =  document.createElement('div')
+                                inputContainer.setAttribute('class', 'mb-3');
+                                skillsInputContainer.appendChild(inputContainer);
+
+                                const skillNameInput = document.createElement('input');
+                                skillNameInput.setAttribute('type', 'text');
+                                skillNameInput.setAttribute('name', 'skills[' + numberOfSkills + '].name');
+                                skillNameInput.setAttribute('class', 'form-control mb-2');
+                                skillNameInput.setAttribute('placeholder', 'Skill');
+                                inputContainer.appendChild(skillNameInput);
+
+                                const skillLevelTemplate = document.getElementById('skillLevelTemplate').cloneNode(true);
+                                skillLevelTemplate.removeAttribute('id');
+                                skillLevelTemplate.className = "form-select";
+                                skillLevelTemplate.name = 'skills[' + numberOfSkills + '].level';
+                                inputContainer.appendChild(skillLevelTemplate);
+                                inputContainer.appendChild(document.createElement('hr'))
+                                numberOfSkills++;
+                                const removeBtn = document.getElementById('removeLastSkillBtn');
+                                removeBtn.disabled = false;
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script th:replace="~{fragments/scripts :: scripts}"></script>
+</body>
+</html>
