@@ -1,6 +1,7 @@
 package de.jinba.server.service;
 
 import de.jinba.server.dto.JobOfferCreationRequest;
+import de.jinba.server.dto.JobOfferEditRequest;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobOffer;
 import de.jinba.server.entity.JobOfferSkill;
@@ -48,7 +49,7 @@ public class JobOfferService {
         return savedOffer;
     }
 
-    public JobOffer updateJobOffer(JobOffer jobOffer, JobOfferCreationRequest request) {
+    public JobOffer updateJobOffer(JobOffer jobOffer, JobOfferEditRequest request) {
         jobOffer.setTitle(request.getTitle());
         jobOffer.setDescription(request.getDescription());
         jobOffer.setLocation(request.getLocation());
