@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/profile/edit").authenticated()
                 .requestMatchers("/profile/**", "/company/**", "/profile").authenticated()
-                .requestMatchers("/offer/create").hasRole(Role.COMPANY_USER.role())
+                .requestMatchers("/offer/create", "/offer/edit").hasRole(Role.COMPANY_USER.role())
                 .requestMatchers("/offer/**").authenticated()
                 .requestMatchers("/application/**").authenticated()
                 .requestMatchers("/**").permitAll();
