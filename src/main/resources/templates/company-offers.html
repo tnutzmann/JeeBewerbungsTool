@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <title>Company</title>
     <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
@@ -62,7 +63,7 @@
                         </div>
                         <a th:href="'/offer/' + ${offer.id} " class="btn btn-outline-primary me-2">Go To</a>
                         <a th:if="${isOwnCompany}" th:href="'/offer/' + ${offer.id} + '/edit' " class="btn btn-outline-secondary">Edit</a>
-                        <a sec:authorize="hasRole('DEFAULT_USER')" th:href="'/offer/' + ${offer.id} + '/apply' " class="btn btn-outline-secondary">Apply</a>
+                        <a th:if="${unappliedJobIds.contains(offer.id)}" sec:authorize="hasRole('DEFAULT_USER')" th:href="'/offer/' + ${offer.id} + '/apply' " class="btn btn-outline-secondary">Apply</a>
                     </div>
                 </div>
             </div>
