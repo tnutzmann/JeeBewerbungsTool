@@ -1,12 +1,13 @@
 package de.jinba.server.controller;
 
 import de.jinba.server.entity.AppUser;
-import de.jinba.server.entity.AppUserSkill;
 import de.jinba.server.entity.Company;
+import de.jinba.server.entity.JobOffer;
 import de.jinba.server.entity.enumuration.Role;
 import de.jinba.server.exception.EntityNotFoundException;
 import de.jinba.server.service.AppUserDetailsService;
 import de.jinba.server.service.CompanyDetailsService;
+import de.jinba.server.service.JobOfferDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,13 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.Comparator;
-
 @Controller
 @RequiredArgsConstructor
 public class ProfileController {
     private final AppUserDetailsService appUserDetailsService;
     private final CompanyDetailsService companyDetailsService;
+    private final JobOfferDetailsService jobOfferDetailsService;
 
     @GetMapping("/profile")
     public String viewOwnProfile(){
@@ -55,6 +55,7 @@ public class ProfileController {
     @GetMapping("/company/{id}")
     public String viewCompany(@PathVariable String id,
                               Model model){
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser().orElseThrow();
         Company company = companyDetailsService.getById(id);
         boolean isOwnCompany = company.getAdmin().getUsername().equals(SecurityContextHolder
                 .getContext()
@@ -62,6 +63,9 @@ public class ProfileController {
                 .getName());
         model.addAttribute("company", company);
         model.addAttribute("isOwnProfile", isOwnCompany);
+        model.addAttribute("unappliedJobIds", jobOfferDetailsService.getAllUnappliedJobOffersByCompany(currentUser, company)
+                .stream()
+                .map(JobOffer::getId).toList());
         return "company";
     }
 }

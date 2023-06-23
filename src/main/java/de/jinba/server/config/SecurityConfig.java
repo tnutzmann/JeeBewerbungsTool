@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .requestMatchers("/profile/edit").authenticated()
                 .requestMatchers("/profile/**", "/company/**", "/profile").authenticated()
                 .requestMatchers("/offer/create").hasRole(Role.COMPANY_USER.role())
+                .requestMatchers("/offer/**").authenticated()
+                .requestMatchers("/application/**").authenticated()
                 .requestMatchers("/**").permitAll();
         return http.build();
     }

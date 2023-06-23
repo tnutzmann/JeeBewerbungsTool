@@ -28,4 +28,5 @@ public class JobApplication {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    private String answerMessage;
 }

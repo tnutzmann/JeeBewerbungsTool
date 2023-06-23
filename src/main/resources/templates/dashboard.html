@@ -41,7 +41,7 @@
                           </div>
                           <hr>
                           <div class="container">
-                              <div th:each="jobApplication : ${profile.jobApplications}" class="row">
+                              <div th:each="jobApplication : ${profile.jobApplications}" class="row mb-2">
                                   <div class="col-6 d-flex align-items-center justify-content-start flex-row">
                                       <span th:text="${jobApplication.jobOffer.title}"></span>
                                   </div>
