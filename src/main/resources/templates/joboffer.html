@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <title>Company</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" th:if="${param.success}">
+                <span th:text="${param.success}"></span>
+                <button aria-label="Close" class="btn-close" data-coreui-dismiss="alert" type="button"></button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 th:text="${jobOffer.title}" class="mb-3"></h2>
+                    <div>
+                        <p class="text-muted mb-1 pb-0">Where?</p>
+                        <span th:text="${jobOffer.location}"></span>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a th:if="${isOwnCompany}" th:href="'/offer/' + ${jobOffer.id} + '/edit' " class="btn btn-outline-secondary">Edit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>Contact</h2>
+                    <div>
+                        <p>Company: <a th:text="${company.name}" th:href="'/company/' + ${company.id}"></a></p>
+                        <p>Email: <span th:text="${company.admin.email}"></span></p>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center" th:if="${isOwnProfile}">
+                        <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div id="content" th:text="${jobOffer.description}"></div>
+                    <script th:src="@{/js/marked.min.js}"></script>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        let description = /*[[${jobOffer.description}]]*/ 'Description';
+                        document.getElementById('content').innerHTML =
+                            marked.parse(description);
+                        /*]]>*/
+                    </script>
+                </div>
+            </div>
+            <div class="card" sec:authorize="hasRole('DEFAULT_USER')">
+                <div class="card-body">
+                    <h2>Your Application</h2>
+                    <div th:if="${!hasApplied}" class="alert alert-info alert-dismissible fade show">
+                        <span>You have not applied yet. Apply here:</span>
+                        <a class="btn btn-outline-secondary" th:href="'/offer/' + ${jobOffer.id} + '/id'">Apply</a>
+                    </div>
+                    <div th:if="${hasApplied}">
+                        <div th:switch="${jobApplication.status}">
+                            <div th:case="${T(de.jinba.server.entity.enumuration.ApplicationStatus).ACCEPTED}"
+                                 class="alert alert-success alert-dismissible fade show">
+                                <p>You have been accepted!</p>
+                                <p th:text="'Message: ' + ${jobApplication.answerMessage}"></p>
+                            </div>
+                            <div th:case="${T(de.jinba.server.entity.enumuration.ApplicationStatus).REJECTED}"
+                                 class="alert alert-danger alert-dismissible fade show">
+                                <p>You have been rejected!</p>
+                                <p th:text="'Message: ' + ${jobApplication.answerMessage}"></p>
+                            </div>
+                            <div th:case="${T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING}"
+                                 class="alert alert-info alert-dismissible fade show">
+                                <p>Your application is still pending.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" th:if="${isOwnCompany}">
+                <div class="card-body">
+                    <h2>Open Applications</h2>
+                    <div th:if="${jobOffer.applications.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This Job Offer does not have any Applications.</span>
+                    </div>
+                    <div th:each="jobApplication : ${jobOffer.getApplications()}">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 ><a th:href="'/profile/' + ${jobApplication.applicant.id}" th:text="${jobApplication.applicant.firstName} + ' ' + ${jobApplication.applicant.lastName}"></a></h5>
+                                        <p th:text="${jobApplication.applicant.email}"></p>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-outline-success" data-coreui-toggle="modal" th:data-coreui-target="'#modal-acc-' + ${jobApplication.id}">
+                                            Accept
+                                        </button>
+                                        <button th:data-coreui-target="'#modal-dec-' + ${jobApplication.id}" data-coreui-toggle="modal" class="btn btn-outline-danger">
+                                            Reject
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" th:id="'modal-acc-' + ${jobApplication.id}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="get" th:action="'/application/' + ${jobApplication.id} + '/accept'">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Accept Application</h5>
+                                                        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <label>Message</label>
+                                                        <input type="text" name="message" class="form-control">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-coreui-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-success">Accept</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" th:id="'modal-dec-' + ${jobApplication.id}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="get" th:action="'/application/' + ${jobApplication.id} + '/reject'">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Accept Application</h5>
+                                                        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <label>Message</label>
+                                                        <input type="text" name="message" class="form-control">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-coreui-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-danger">Reject</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Required Skills</h2>
+                    <div th:if="${jobOffer.skills.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This Job Offer does not require any Skills.</span>
+                    </div>
+                    <div class="container">
+                        <div th:each="skill : ${jobOffer.skills}" class="row">
+                            <div class="col-6">
+                                <ul class="px-2 mb-1">
+                                    <li th:text="${skill.skill.name}"></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 d-flex align-items-center justify-content-end flex-row">
+                                <span class="text-muted" th:text="${skill.level.years()}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/scripts :: scripts}"></script>
+</body>
+</html>
