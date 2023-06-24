@@ -63,8 +63,8 @@
                       <div class="card-body">
                           <div class="row">
                               <div class="col">
-                                  <div th:each="app : applications" th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING}">
-                                    <p th:text="app.id"></p>
+                                  <div th:each="app : ${applications}" th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING)}">
+                                    <p th:text="${app.id}"></p>
                                   </div>
                               </div>
                               <div class="col">
