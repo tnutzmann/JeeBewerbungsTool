@@ -9,6 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * This entity represents a job offer.
+ */
 @Entity
 @Getter
 @Setter

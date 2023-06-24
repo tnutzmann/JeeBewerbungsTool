@@ -2,7 +2,6 @@ package de.jinba.server.service;
 
 import de.jinba.server.dto.JobOfferCreationRequest;
 import de.jinba.server.dto.JobOfferEditRequest;
-import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobOffer;
 import de.jinba.server.entity.JobOfferSkill;
@@ -17,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for handling job offers.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,8 +28,16 @@ public class JobOfferService {
     private final CompanyDetailsService companyDetailsService;
     private final SkillService skillService;
     private final AppUserDetailsService appUserDetailsService;
+
+    /**
+     * Adds new job offer.
+     *
+     * @param company Company that adds job offer.
+     * @param request Request containing job offer data.
+     * @return Created job offer.
+     */
     @Transactional
-    public JobOffer addNewJobOffer(Company company, JobOfferCreationRequest request){
+    public JobOffer addNewJobOffer(Company company, JobOfferCreationRequest request) {
         JobOffer jobOffer = JobOffer.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -51,16 +61,29 @@ public class JobOfferService {
         return savedOffer;
     }
 
+    /**
+     * Updates job offer.
+     *
+     * @param jobOffer Job offer to update.
+     * @param request  Request containing job offer data.
+     * @return Updated job offer.
+     */
     public JobOffer updateJobOffer(JobOffer jobOffer, JobOfferEditRequest request) {
         jobOffer.setTitle(request.getTitle());
         jobOffer.setDescription(request.getDescription());
         jobOffer.setLocation(request.getLocation());
 
-        JobOffer savedJoboffer = jobOfferRepository.save(jobOffer);
+        JobOffer savedJobOffer = jobOfferRepository.save(jobOffer);
 
-        return savedJoboffer;
+        return savedJobOffer;
     }
 
+    /**
+     * Gets a job offer by id.
+     *
+     * @param id Id of job offer.
+     * @return Job offer.
+     */
     public JobOffer getById(String id) {
         return jobOfferRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Could not find JobOffer with id: %s", id)));
     }
