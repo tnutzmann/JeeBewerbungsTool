@@ -7,8 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * This repository provides DB operations for {@link JobOffer}.
+ */
 @Repository
 public interface JobOfferRepository extends JpaRepository<JobOffer, String> {
+    /**
+     * This method finds all {@link JobOffer}s by a given Company, but only those that a given User has not applied to.
+     * @param userId The id of the {@link de.jinba.server.entity.AppUser}.
+     * @param companyId The id of the {@link de.jinba.server.entity.Company}.
+     * @return A list of {@link JobOffer}s that a given User has not applied to.
+     */
     @Query("""
     SELECT j FROM JobOffer j
     WHERE j.company.id = ?2

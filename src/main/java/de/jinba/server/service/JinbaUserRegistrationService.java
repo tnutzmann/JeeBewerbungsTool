@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+/**
+ * Service for handling registration of Jinba users.
+ */
 @Service
 @RequiredArgsConstructor
 public class JinbaUserRegistrationService implements RegistrationService<UserRegistrationRequest> {

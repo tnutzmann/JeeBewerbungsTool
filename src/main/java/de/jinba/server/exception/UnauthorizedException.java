@@ -4,6 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * This exception is thrown when a user is not authorized to access a resource.
+ * The exception is mapped to the HTTP status code 401 Unauthorized.
+ * It inherits from {@link ResponseStatusException}. Therefore, it will be automatically handled by the
+ * Spring Boot error handling mechanism.
+ */
 public class UnauthorizedException extends ResponseStatusException {
 
     public static final HttpStatusCode statusCode = HttpStatus.UNAUTHORIZED;

@@ -1,5 +1,8 @@
 package de.jinba.server.entity.enumuration;
 
+/**
+ * This enum represents the skill level of a {@link de.jinba.server.entity.Skill}.
+ */
 public enum SkillLevel {
     BEGINNER("Beginner", "0 - 1 years"),
     INTERMEDIATE("Intermediate", "1 - 3 years"),
