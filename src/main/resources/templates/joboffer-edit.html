@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jinba - Edit JobOffer</title>
+    <link rel="stylesheet" th:href="@{/css/coreui/coreui.min.css}">
+</head>
+<body class="bg-light min-vh-100">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <form th:object="${jobOfferEditForm}" th:action="${'/offer/'+ id + '/edit'}" method="post">
+                        <div class="card-body">
+                            <h2>Edit Job Offer</h2>
+                            <div class="mb-3">
+                                <label for="titleInput" class="form-label">Title</label>
+                                <input id="titleInput" th:field="*{title}" class="form-control" type="text" aria-describedby="titleInputFeedback" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''">
+                                <div id="titleInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                                    <span th:errors="*{title}"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="locationInput" class="form-label">Location</label>
+                                <input id="locationInput" type="text" th:field="*{location}" class="form-control"
+                                       aria-describedby="locationInputFeedback"
+                                       th:classappend="${#fields.hasErrors('location')} ? 'is-invalid' : ''"/>
+                                <div id="locationInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('location')}">
+                                    <span th:errors="*{location}"></span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descriptionInput" class="form-label">Description</label>
+                                <textarea id="descriptionInput" th:field="*{description}" class="form-control"
+                                          aria-describedby="descriptionInputFeedback"
+                                          th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"></textarea>
+                                <div id="descriptionInputFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
+                                    <span th:errors="*{description}"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="submit" value="Save" class="btn btn-primary"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="card mb-3">
+                    <form method="post" th:object="${addSkillForm}" th:action="${'/offer/'+ jobOfferEditForm.id + '/edit/skills/add'}">
+                        <div class="card-body">
+                            <h2>Add Skills</h2>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label" for="skillNameInput">Name</label>
+                                    <input aria-describedby="skillNameInputFeedback" class="form-control"
+                                           id="skillNameInput"
+                                           th:classappend="${#fields.hasErrors('skillName')} ? 'is-invalid' : ''"
+                                           th:field="*{skillName}"
+                                           type="text"/>
+                                    <div class="invalid-feedback" id="skillNameInputFeedback"
+                                         th:if="${#fields.hasErrors('skillName')}">
+                                        <span th:errors="*{skillName}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label" for="skillAddLevelInput">Level</label>
+                                    <select class="form-select" id="skillAddLevelInput" th:field="*{level}">
+                                        <option th:each="opt : ${T(de.jinba.server.entity.enumuration.SkillLevel).values()}"
+                                                th:text="${opt.years()}" th:value="${opt}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <input class="btn btn-primary" type="submit" value="Add Skill"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Skills</h2>
+                        <div class="row mb-3" th:each="skill : ${skills}">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${skill.skill.name}"></h5>
+                                        <p class="card-text">
+                                            <strong>Level: </strong>
+                                            <span th:text="${skill.level.years}"></span>
+                                        </p>
+                                        <a class="btn btn-outline-danger"
+                                           th:href="${'/offer/'+ jobOfferEditForm.id + '/edit/skills/remove/' + skill.id}">Remove</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<script th:replace="~{fragments/scripts :: scripts}"></script>
+</body>
+</html>

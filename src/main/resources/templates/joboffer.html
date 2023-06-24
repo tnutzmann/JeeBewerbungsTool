@@ -63,7 +63,7 @@
                     <h2>Your Application</h2>
                     <div th:if="${!hasApplied}" class="alert alert-info alert-dismissible fade show">
                         <span>You have not applied yet. Apply here:</span>
-                        <a class="btn btn-outline-secondary" th:href="'/offer/' + ${jobOffer.id} + '/id'">Apply</a>
+                        <a class="btn btn-outline-secondary" th:href="'/offer/' + ${jobOffer.id} + '/apply'">Apply</a>
                     </div>
                     <div th:if="${hasApplied}">
                         <div th:switch="${jobApplication.status}">
