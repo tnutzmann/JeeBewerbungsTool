@@ -4,6 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * This exception is thrown when a parameter is invalid.
+ * The exception is mapped to the HTTP status code 400 Bad Request.
+ * It inherits from {@link ResponseStatusException}. Therefore, it will be automatically handled by the
+ * Spring Boot error handling mechanism.
+ */
 public class ParameterInvalidException extends ResponseStatusException {
 
     public static final HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
