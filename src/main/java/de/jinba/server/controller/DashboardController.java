@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,10 +39,8 @@ public class DashboardController {
         model.addAttribute("profile", profile);
 
         if(profile.getRole().equals(Role.COMPANY_USER)) {
-            ModelConfigurer.of(model)
-                    .with("applicationsList", companyDetailsService.findCompanyOfCurrentUser().getJobOffers().stream()
-                            .map(JobOffer::getApplications).collect(Collectors.toList()));
-            return "dashboard";
+                    model.addAttribute("applicationsList", companyDetailsService.findCompanyOfCurrentUser().getJobOffers().stream()
+                            .map(JobOffer::getApplications).flatMap(List::stream).toList());
         }
 
         return "dashboard";
