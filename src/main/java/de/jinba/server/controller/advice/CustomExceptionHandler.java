@@ -21,7 +21,8 @@ public class CustomExceptionHandler {
 
     /**
      * Handles {@link ConstraintViolationException}. This exception is thrown when a constraint is violated.
-     * @param e The exception.
+     *
+     * @param e     The exception.
      * @param model The model.
      * @return The name of the error template.
      */

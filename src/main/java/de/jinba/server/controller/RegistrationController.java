@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * This controller handles the registration of users and companies.
+ */
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +27,12 @@ public class RegistrationController {
     private final AppUserDetailsService appUserDetailsService;
     private final CompanyDetailsService companyDetailsService;
 
+    /**
+     * Shows the registration page for users.
+     *
+     * @param model The model.
+     * @return The name of the registration template.
+     */
     @GetMapping("/register")
     public String viewRegisterUserPage(Model model) {
         model.addAttribute("registerForm", new UserRegistrationRequest("",
@@ -32,6 +41,13 @@ public class RegistrationController {
         return "register";
     }
 
+    /**
+     * Registers a user.
+     *
+     * @param request The registration request.
+     * @param result  The binding result. Used for input validation.
+     * @return Redirects to the login page, when the registration was successful. Otherwise, the registration page is shown again.
+     */
     @PostMapping("/register")
     public String doRegisterUser(@Valid @ModelAttribute("registerForm") UserRegistrationRequest request,
                                  BindingResult result) {
@@ -45,12 +61,25 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    /**
+     * Shows the registration page for companies.
+     *
+     * @param model The model.
+     * @return The name of the registration template.
+     */
     @GetMapping("/register/business")
     public String viewRegisterCompanyPage(Model model) {
         model.addAttribute("registerForm", new CompanyRegistrationRequest());
         return "register-company";
     }
 
+    /**
+     * Registers a company.
+     *
+     * @param request The registration request.
+     * @param result  The binding result. Used for input validation.
+     * @return Redirects to the login page when input is valid. Otherwise, returns the registration page.
+     */
     @PostMapping("/register/business")
     public String doRegisterCompany(@Valid @ModelAttribute("registerForm") CompanyRegistrationRequest request,
                                     BindingResult result) {
