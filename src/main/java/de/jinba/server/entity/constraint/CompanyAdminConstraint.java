@@ -5,6 +5,9 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+/**
+ * This annotation is used to validate that a {@link de.jinba.server.entity.AppUser} is a company user.
+ */
 @Documented
 @Constraint(validatedBy = CompanyAdminValidator.class)
 @Target({ElementType.FIELD})

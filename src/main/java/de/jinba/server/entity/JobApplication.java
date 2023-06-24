@@ -8,6 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * This entity represents a job application.
+ */
 @Entity
 @Getter
 @Setter

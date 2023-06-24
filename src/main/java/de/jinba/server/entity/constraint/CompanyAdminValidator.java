@@ -5,6 +5,9 @@ import de.jinba.server.entity.enumuration.Role;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+/**
+ * This validator checks that the admin of a {@link de.jinba.server.entity.Company} has the role {@link Role#COMPANY_USER}.
+ */
 public class CompanyAdminValidator implements ConstraintValidator<CompanyAdminConstraint, AppUser> {
     @Override
     public void initialize(CompanyAdminConstraint constraintAnnotation) {
