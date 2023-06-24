@@ -23,17 +23,11 @@ public class JobOfferEditRequest implements Serializable {
     private String description;
     @NotEmpty(message = "Cannot be empty")
     private String location;
-    private List<JobOfferSkillDto> skills;
 
     public JobOfferEditRequest(JobOffer jobOffer) {
         this.id = jobOffer.getId();
         this.title = jobOffer.getTitle();
         this.description = jobOffer.getDescription();
         this.location = jobOffer.getLocation();
-
-        this.skills = jobOffer.getSkills()
-                .stream()
-                .map(jos -> new JobOfferSkillDto(jos.getSkill().getName(), jos.getLevel()))
-                .toList();
     }
 }
