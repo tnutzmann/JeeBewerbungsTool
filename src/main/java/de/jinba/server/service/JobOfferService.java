@@ -2,6 +2,7 @@ package de.jinba.server.service;
 
 import de.jinba.server.dto.JobOfferCreationRequest;
 import de.jinba.server.dto.JobOfferEditRequest;
+import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobOffer;
 import de.jinba.server.entity.JobOfferSkill;
@@ -24,6 +25,7 @@ public class JobOfferService {
     private final JobOfferSkillRepository jobOfferSkillRepository;
     private final CompanyDetailsService companyDetailsService;
     private final SkillService skillService;
+    private final AppUserDetailsService appUserDetailsService;
     @Transactional
     public JobOffer addNewJobOffer(Company company, JobOfferCreationRequest request){
         JobOffer jobOffer = JobOffer.builder()
@@ -55,16 +57,6 @@ public class JobOfferService {
         jobOffer.setLocation(request.getLocation());
 
         JobOffer savedJoboffer = jobOfferRepository.save(jobOffer);
-
-        List<JobOfferSkill> skills = request.getSkills()
-                .stream()
-                .map(s -> JobOfferSkill.builder()
-                        .skill(skillService.getSkillAndCreateIfNotExists(s.getName()))
-                        .level(s.getLevel())
-                        .jobOffer(savedJoboffer)
-                        .build())
-                .toList();
-        jobOfferSkillRepository.saveAll(skills);
 
         return savedJoboffer;
     }
