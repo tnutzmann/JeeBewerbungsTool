@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This entity represents a user of the application.
+ * If the user is a company user, the company is represented by the {@link Company} entity.
+ */
 @Entity
 @Getter
 @Setter

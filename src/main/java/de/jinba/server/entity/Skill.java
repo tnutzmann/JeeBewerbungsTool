@@ -3,6 +3,9 @@ package de.jinba.server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * This entity represents a skill.
+ */
 @Entity
 @Getter
 @Setter
