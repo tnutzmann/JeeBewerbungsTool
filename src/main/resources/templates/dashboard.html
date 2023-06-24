@@ -59,8 +59,26 @@
           </div>
           <div class="col-9">
               <div class="card">
-                  <div class="card-body">
-                    JOBSUCHE
+                  <div th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).COMPANY_USER)}">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col">
+                                  <div th:each="app : applications" th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING}">
+                                    <p th:text="app.id"></p>
+                                  </div>
+                              </div>
+                              <div class="col">
+                                  Accepted
+                              </div>
+                              <div class="col">
+                                  Declined
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+                  <div th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).DEFAULT_USER)}" class="card-body">
+                      JOBSUCHE
                   </div>
               </div>
           </div>
