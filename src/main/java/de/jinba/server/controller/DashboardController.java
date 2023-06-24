@@ -39,7 +39,7 @@ public class DashboardController {
 
         if(profile.getRole().equals(Role.COMPANY_USER)) {
             ModelConfigurer.of(model)
-                    .with("applications", companyDetailsService.findCompanyOfCurrentUser().getJobOffers().stream()
+                    .with("applicationsList", companyDetailsService.findCompanyOfCurrentUser().getJobOffers().stream()
                             .map(JobOffer::getApplications).collect(Collectors.toList()));
             return "dashboard";
         }
