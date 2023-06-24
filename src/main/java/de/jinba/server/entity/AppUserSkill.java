@@ -4,6 +4,11 @@ import de.jinba.server.entity.enumuration.SkillLevel;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * This entity represents a skill of a user.
+ * The skill is represented by the {@link Skill} entity.
+ * The level is represented by the {@link SkillLevel} enum.
+ */
 @Entity
 @Getter
 @Setter

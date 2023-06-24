@@ -10,12 +10,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Set;
 
+/**
+ * This class handles exceptions that are not yet handled by the Spring Boot error handling mechanism.
+ */
 @ControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
     @Value("${server.error.include-message}")
     private String includeMessage;
 
+    /**
+     * Handles {@link ConstraintViolationException}. This exception is thrown when a constraint is violated.
+     *
+     * @param e     The exception.
+     * @param model The model.
+     * @return The name of the error template.
+     */
     @ExceptionHandler({ConstraintViolationException.class})
     public String handleConstraintViolationException(ConstraintViolationException e,
                                                      Model model) {

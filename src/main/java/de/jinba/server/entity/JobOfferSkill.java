@@ -4,6 +4,9 @@ import de.jinba.server.entity.enumuration.SkillLevel;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * This entity represents a skill of a job offer.
+ */
 @Entity
 @Getter
 @Setter

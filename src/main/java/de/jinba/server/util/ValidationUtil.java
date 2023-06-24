@@ -3,6 +3,9 @@ package de.jinba.server.util;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class for validation.
+ */
 public class ValidationUtil {
 
     public static final String VALID_EMAIL_ADDRESS_REGEX =
