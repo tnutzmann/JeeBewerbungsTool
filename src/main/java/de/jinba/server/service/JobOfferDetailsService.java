@@ -9,27 +9,64 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service for handling job offer details.
+ * TODO: Merge with JobOfferService.
+ */
 @Service
 @RequiredArgsConstructor
 public class JobOfferDetailsService {
     private final JobOfferRepository jobOfferRepository;
 
-    public JobOffer getById(String id){
+    /**
+     * Gets job offer by id.
+     *
+     * @param id Id of job offer.
+     * @return Job offer.
+     */
+    public JobOffer getById(String id) {
         return jobOfferRepository.findById(id).orElseThrow();
     }
 
-    public List<JobOffer> getAll(){
+    /**
+     * Gets all job offers.
+     *
+     * @return List of job offers.
+     */
+    public List<JobOffer> getAll() {
         return jobOfferRepository.findAll();
     }
 
-    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, String companyId){
+    /**
+     * Gets all job offers by company that the user has not yet applied to.
+     *
+     * @param user      User that is requesting job offers.
+     * @param companyId Id of company.
+     * @return List of job offers that the user has not yet applied to.
+     */
+    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, String companyId) {
         return jobOfferRepository.findAllUnappliedJobOffersByCompanyAndUser(user.getId(), companyId);
     }
-    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, Company companyId){
-        return this.getAllUnappliedJobOffersByCompany(user, companyId.getId());
+
+    /**
+     * Gets all job offers by company that the user has not yet applied to.
+     *
+     * @param user    User that is requesting job offers.
+     * @param company the company.
+     * @return List of job offers that the user has not yet applied to.
+     */
+    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, Company company) {
+        return this.getAllUnappliedJobOffersByCompany(user, company.getId());
     }
 
-    public boolean hasUserAppliedToJobOffer(AppUser user, JobOffer jobOffer){
+    /**
+     * Checks if user has applied to job offer.
+     *
+     * @param user     User that is requesting the check.
+     * @param jobOffer Job offer.
+     * @return True if user has applied to job offer, false otherwise.
+     */
+    public boolean hasUserAppliedToJobOffer(AppUser user, JobOffer jobOffer) {
         return jobOffer.getApplications()
                 .stream()
                 .anyMatch(application -> application.getApplicant()
