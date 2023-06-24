@@ -4,7 +4,7 @@ import de.jinba.server.dto.JobOfferCreationRequest;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobOffer;
 import de.jinba.server.service.CompanyDetailsService;
-import de.jinba.server.service.JobOfferCreationService;
+import de.jinba.server.service.JobOfferService;
 import de.jinba.server.util.ModelConfigurer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class JobOfferCreationController {
     public static final String JOB_OFFER_CREATION_FORM = "jobOfferCreationForm";
     public static final String BINDING_RESULT_PREFIX = "org.springframework.validation.BindingResult.%s";
-    private final JobOfferCreationService jobOfferCreationService;
+    private final JobOfferService jobOfferService;
     private final CompanyDetailsService companyDetailsService;
     @GetMapping("/offer/create")
     public String viewJobOfferCreationPage(Model model){
@@ -48,7 +48,7 @@ public class JobOfferCreationController {
             request.setSkills(new ArrayList<>());
         }
         Company company = companyDetailsService.findCompanyOfCurrentUser();
-        JobOffer createdOffer = jobOfferCreationService.addNewJobOffer(company, request);
+        JobOffer createdOffer = jobOfferService.addNewJobOffer(company, request);
         return String.format("redirect:/offer/%s", createdOffer.getId());
     }
 }

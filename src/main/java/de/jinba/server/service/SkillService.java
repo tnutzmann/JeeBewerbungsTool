@@ -1,11 +1,10 @@
 package de.jinba.server.service;
 
 import de.jinba.server.dto.SkillAddRequest;
-import de.jinba.server.entity.AppUser;
-import de.jinba.server.entity.AppUserSkill;
-import de.jinba.server.entity.Skill;
+import de.jinba.server.entity.*;
 import de.jinba.server.repository.AppUserRepository;
 import de.jinba.server.repository.AppUserSkillRepository;
+import de.jinba.server.repository.JobOfferSkillRepository;
 import de.jinba.server.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ public class SkillService {
     private final AppUserRepository appUserRepository;
     private final SkillRepository skillRepository;
     private final AppUserSkillRepository appUserSkillRepository;
+    private final JobOfferSkillRepository jobOfferSkillRepository;
 
     public void removeSkillFromUser(AppUser user, Long id){
         appUserSkillRepository.deleteById(id);
@@ -48,6 +48,34 @@ public class SkillService {
         }
     }
 
+    public void removeSkillFromJobOffer(JobOffer jobOffer, Long id) {
+        jobOfferSkillRepository.deleteById(id);
+    }
+
+    public void addSkillToJobOffer(JobOffer jobOffer, SkillAddRequest request) {
+        Optional<Skill> existingSkill = skillRepository.findByName(request.getSkillName());
+        if(existingSkill.isPresent()) {
+            if(hasJobOfferSkill(request.getSkillName(), jobOffer)) {
+                throw new IllegalStateException("JobOffer already has skill");
+            }
+            JobOfferSkill jobOfferSkill = JobOfferSkill.builder()
+                    .jobOffer(jobOffer)
+                    .level(request.getLevel())
+                    .skill(existingSkill.get())
+                    .build();
+            jobOfferSkillRepository.save(jobOfferSkill);
+        } else {
+            Skill createdSkill = createSkill(request.getSkillName());
+            JobOfferSkill jobOfferSkill = JobOfferSkill.builder()
+                    .jobOffer(jobOffer)
+                    .level(request.getLevel())
+                    .skill(createdSkill)
+                    .build();
+            jobOfferSkillRepository.save(jobOfferSkill);
+        }
+
+    }
+
     public Skill createSkill(String name){
         Skill skill = Skill.builder()
                 .name(name)
@@ -65,5 +93,11 @@ public class SkillService {
         AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to add skill"));
         return currentUser.getSkills().stream().anyMatch(skill -> skill.getSkill().getName().equals(name));
+    }
+
+    public boolean hasJobOfferSkill(String name, JobOffer jobOffer){
+        appUserDetailsService.getCurrentAuthenticatedUser()
+                .orElseThrow(() -> new IllegalStateException("Unauthenticated user attempted to add skill to JobOffer."));
+        return jobOffer.getSkills().stream().anyMatch(skill -> skill.getSkill().getName().equals(name));
     }
 }
