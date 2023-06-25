@@ -63,7 +63,7 @@
         </div>
         <div class="col-9">
             <div class="card">
-                <div th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).COMPANY_USER)}">
+                <div sec:authorize="hasRole('COMPANY_USER')">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
