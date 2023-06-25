@@ -14,7 +14,7 @@
             <div class="col md-8">
                 <div class="card-group">
                     <div class="card p-4">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-between">
                             <h1>Register - Business</h1>
                             <form action="#" method="post" th:action="@{/register/business}"
                                   th:object="${registerForm}" id="register-form">
@@ -92,9 +92,9 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="companyDescInput">Company Description</label>
-                                        <input type="text" aria-describedby="companyDescInputFeedback" class="form-control" id="companyDescInput"
+                                        <textarea aria-describedby="companyDescInputFeedback" class="form-control" id="companyDescInput"
                                                   th:classappend="${#fields.hasErrors('company.description')} ? 'is-invalid' : ''"
-                                                  th:field="*{company.description}"/>
+                                                  th:field="*{company.description}"></textarea>
                                         <div class="invalid-feedback" id="companyDescInputFeedback"
                                              th:if="${#fields.hasErrors('company.description')}">
                                             <span th:errors="*{company.description}"></span>
@@ -115,11 +115,16 @@
                         </div>
                     </div>
                     <div class="card py-5 bg-primary text-white">
-                        <div class="card-body text-center d-flex justify-content-center align-items-center">
+                        <div class="card-body text-center d-flex justify-content-center align-items-center flex-column gap-5">
                             <div>
                                 <h2>Login</h2>
                                 <p>Already have an account? Login in here</p>
                                 <a class="btn btn-outline-light mt-3 px-4" th:href="@{/login}">Login</a>
+                            </div>
+                            <div>
+                                <h2>For People</h2>
+                                <p>Are you looking for a Job? Register here</p>
+                                <a class="btn btn-outline-light mt-3 px-4" th:href="@{/register}">Register as User</a>
                             </div>
                         </div>
                     </div>
