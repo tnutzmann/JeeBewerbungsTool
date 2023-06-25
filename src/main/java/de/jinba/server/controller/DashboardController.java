@@ -1,13 +1,20 @@
 package de.jinba.server.controller;
 
 import de.jinba.server.entity.AppUser;
+import de.jinba.server.entity.JobOffer;
+import de.jinba.server.entity.enumuration.Role;
 import de.jinba.server.exception.UnauthorizedException;
 import de.jinba.server.service.AppUserDetailsService;
+import de.jinba.server.service.CompanyDetailsService;
+import de.jinba.server.util.ModelConfigurer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This controller handles the dashboard page.
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class DashboardController {
     private final AppUserDetailsService appUserDetailsService;
+    private final CompanyDetailsService companyDetailsService;
 
     /**
      * Shows the dashboard page.
@@ -29,6 +37,12 @@ public class DashboardController {
         AppUser profile = appUserDetailsService.getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new UnauthorizedException("Unauthenticated user attempted to access the dashboard."));
         model.addAttribute("profile", profile);
+
+        if(profile.getRole().equals(Role.COMPANY_USER)) {
+                    model.addAttribute("applicationsList", companyDetailsService.findCompanyOfCurrentUser().getJobOffers().stream()
+                            .map(JobOffer::getApplications).flatMap(List::stream).toList());
+        }
+
         return "dashboard";
     }
 

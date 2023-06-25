@@ -28,8 +28,12 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
+                    <span class="dropdown-header bg-light py-2 fw-semibold">Jobs</span>
+                    <a class="dropdown-item" th:href="'/profile'" sec:authorize="hasRole('COMPANY_USER')">
+                        My Job Offers</a>
                     <a class="dropdown-item" th:href="@{/offer/create}" sec:authorize="hasRole('COMPANY_USER')">
                         New Job Offer</a>
+                    <span class="dropdown-header bg-light py-2 fw-semibold">Account</span>
                     <a class="dropdown-item" th:href="@{/profile}">
                         Profile</a>
                     <a class="dropdown-item" th:href="@{/profile/edit}">
