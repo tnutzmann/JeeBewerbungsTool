@@ -35,6 +35,9 @@ public class RegistrationController {
      */
     @GetMapping("/register")
     public String viewRegisterUserPage(Model model) {
+        if(appUserDetailsService.isAuthenticated()){
+            return "redirect:/dashboard";
+        }
         model.addAttribute("registerForm", new UserRegistrationRequest("",
                 "", "", "", ""));
         model.addAttribute("error", null);
@@ -51,6 +54,9 @@ public class RegistrationController {
     @PostMapping("/register")
     public String doRegisterUser(@Valid @ModelAttribute("registerForm") UserRegistrationRequest request,
                                  BindingResult result) {
+        if(appUserDetailsService.isAuthenticated()){
+            return "redirect:/dashboard";
+        }
         if (appUserDetailsService.existsByUsername(request.getEmail())) {
             result.rejectValue("email", "error.registerForm", "Email already exists");
         }
@@ -69,6 +75,9 @@ public class RegistrationController {
      */
     @GetMapping("/register/business")
     public String viewRegisterCompanyPage(Model model) {
+        if(appUserDetailsService.isAuthenticated()){
+            return "redirect:/dashboard";
+        }
         model.addAttribute("registerForm", new CompanyRegistrationRequest());
         return "register-company";
     }
@@ -83,6 +92,9 @@ public class RegistrationController {
     @PostMapping("/register/business")
     public String doRegisterCompany(@Valid @ModelAttribute("registerForm") CompanyRegistrationRequest request,
                                     BindingResult result) {
+        if(appUserDetailsService.isAuthenticated()){
+            return "redirect:/dashboard";
+        }
         if (appUserDetailsService.existsByUsername(request.getUser().getEmail())) {
             result.rejectValue("user.email", "error.registerForm", "Email already exists");
         }
