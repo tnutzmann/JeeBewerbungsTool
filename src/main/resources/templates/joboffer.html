@@ -88,10 +88,10 @@
             <div class="card" th:if="${isOwnCompany}">
                 <div class="card-body">
                     <h2>Open Applications</h2>
-                    <div th:if="${jobOffer.applications.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
-                        <span>This Job Offer does not have any Applications.</span>
+                    <div th:if="${!hasOpenApplications}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This Job Offer does not have any open Applications.</span>
                     </div>
-                    <div th:each="jobApplication : ${jobOffer.getApplications()}">
+                    <div th:each="jobApplication : ${jobOffer.getApplications()}" th:if="${jobApplication.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING)}">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -133,7 +133,7 @@
                                             <div class="modal-content">
                                                 <form method="get" th:action="'/application/' + ${jobApplication.id} + '/reject'">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Accept Application</h5>
+                                                        <h5 class="modal-title">Reject Application</h5>
                                                         <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -157,7 +157,7 @@
             </div>
         </div>
         <div class="col-3">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-body">
                     <h2>Required Skills</h2>
                     <div th:if="${jobOffer.skills.isEmpty()}" class="alert alert-danger alert-dismissible fade show">
@@ -176,6 +176,47 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2>Accepted Applications</h2>
+                    <div th:if="${!hasAcceptedApplications}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This Job Offer does not have any accepted Applications.</span>
+                    </div>
+                    <div th:each="app : ${jobOffer.applications}"
+                         th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).ACCEPTED)}">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>From: <a th:href="${'/profile/' + app.applicant.id}"
+                                             th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
+                                </h5>
+                                <p th:text="${app.applicant.email}" class="text-muted"></p>
+                                <p>Message: <span th:text="${app.answerMessage}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2>Rejected Applications</h2>
+                    <div th:if="${!hasRejectedApplications}" class="alert alert-danger alert-dismissible fade show">
+                        <span>This Job Offer does not have any rejected Applications.</span>
+                    </div>
+                    <div th:each="app : ${jobOffer.applications}"
+                         th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).REJECTED)}">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>From: <a th:href="${'/profile/' + app.applicant.id}"
+                                             th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
+                                </h5>
+                                <p th:text="${app.applicant.email}" class="text-muted"></p>
+                                <p>Message: <span th:text="${app.answerMessage}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
