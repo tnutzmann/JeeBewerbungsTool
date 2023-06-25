@@ -40,14 +40,14 @@ public class ApplicationController {
     @GetMapping("/application/{id}/accept")
     public String acceptApplication(@PathVariable String id, @RequestParam String message) {
         applicationService.acceptApplication(id, message);
-        return "redirect:/profile";
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/application/{id}/reject")
     public String rejectApplication(@PathVariable String id,
                                     @RequestParam String message) {
         applicationService.rejectApplication(id, message);
-        return "redirect:/profile";
+        return "redirect:/dashboard";
     }
 
 }

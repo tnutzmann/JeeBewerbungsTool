@@ -4,6 +4,7 @@ import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobApplication;
 import de.jinba.server.entity.JobOffer;
+import de.jinba.server.entity.enumuration.ApplicationStatus;
 import de.jinba.server.entity.enumuration.Role;
 import de.jinba.server.exception.UnauthorizedException;
 import de.jinba.server.service.AppUserDetailsService;
@@ -81,7 +82,17 @@ public class JobOfferDisplayController {
             model.addAttribute("hasApplied", application.isPresent());
             application.ifPresent(jobApplication -> model.addAttribute("jobApplication", jobApplication));
         }
-
+        if (currentUser.getRole().equals(Role.COMPANY_USER)) {
+            model.addAttribute("hasOpenApplications", jobOffer.getApplications()
+                    .stream()
+                    .anyMatch(a -> a.getStatus().equals(ApplicationStatus.PENDING)));
+            model.addAttribute("hasAcceptedApplications", jobOffer.getApplications()
+                    .stream()
+                    .anyMatch(a -> a.getStatus().equals(ApplicationStatus.ACCEPTED)));
+            model.addAttribute("hasRejectedApplications", jobOffer.getApplications()
+                    .stream()
+                    .anyMatch(a -> a.getStatus().equals(ApplicationStatus.REJECTED)));
+        }
         model.addAttribute("jobOffer", jobOffer);
         model.addAttribute("isOwnCompany", isOwnCompany);
         model.addAttribute("company", company);
