@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
-      xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Jinba - Dashboard</title>
@@ -29,7 +29,7 @@
                             <p>Email: <span th:text="${profile.email}"></span></p>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
+                            <a class="btn btn-primary" th:href="@{/profile/edit}">Edit Profile</a>
                         </div>
                     </div>
                 </div>
@@ -38,13 +38,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h2>Open Applications</h2>
-                        <div th:if="${profile.jobApplications.isEmpty()}"
-                             class="alert alert-danger alert-dismissible fade show">
+                        <div class="alert alert-danger alert-dismissible fade show"
+                             th:if="${profile.jobApplications.isEmpty()}">
                             <span>You don't have any open Job Applications.</span>
                         </div>
                         <hr>
                         <div class="container">
-                            <div th:each="jobApplication : ${profile.jobApplications}" class="row mb-2">
+                            <div class="row mb-2" th:each="jobApplication : ${profile.jobApplications}">
                                 <div class="col-6 d-flex align-items-center justify-content-start flex-row">
                                     <span th:text="${jobApplication.jobOffer.title}"></span>
                                 </div>
@@ -68,58 +68,146 @@
                         <div class="row">
                             <div class="col">
                                 <h4>Pending</h4>
-                                <div th:each="app : ${applicationsList}"
+                                <div class="mb-3"
+                                     th:each="app : ${applicationsList}"
                                      th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).PENDING)}">
                                     <div class="card">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h5><a th:href="${'/profile/' + app.applicant.id}"
-                                                   th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
-                                            </h5>
-                                            <p th:text="${app.applicant.email}"></p>
-                                            <a th:href="${'/offer/' + app.jobOffer.id}"
-                                               th:text="${app.jobOffer.title}"></a>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <h5>From: <a th:href="${'/profile/' + app.applicant.id}"
+                                                                 th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
+                                                    </h5>
+                                                    <p th:text="${app.applicant.email}"></p>
+                                                    <span>
+                                                        On:
+                                                        <a th:href="${'/offer/' + app.jobOffer.id}"
+                                                           th:text="${app.jobOffer.title}"></a>
+                                                    </span>
+                                                </div>
+                                                <div class="col-5 h-100">
+                                                    <div class="w-100 h-100 d-flex justify-content-center gap-3 flex-column">
+                                                        <button class="btn btn-outline-success w-100"
+                                                                data-coreui-toggle="modal"
+                                                                th:data-coreui-target="'#modal-acc-' + ${app.id}">
+                                                            Accept
+                                                        </button>
+                                                        <button class="btn btn-outline-danger w-100"
+                                                                data-coreui-toggle="modal"
+                                                                th:data-coreui-target="'#modal-dec-' + ${app.id}">
+                                                            Reject
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal fade" th:id="'modal-acc-' + ${app.id}">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <form method="get"
+                                                                      th:action="'/application/' + ${app.id} + '/accept'">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Accept Application</h5>
+                                                                        <button aria-label="Close" class="btn-close"
+                                                                                data-coreui-dismiss="modal"
+                                                                                type="button"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <label>Message</label>
+                                                                        <input class="form-control" name="message"
+                                                                               type="text">
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-outline-secondary"
+                                                                                data-coreui-dismiss="modal"
+                                                                                type="button">Close
+                                                                        </button>
+                                                                        <button class="btn btn-outline-success"
+                                                                                type="submit">Accept
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" th:id="'modal-dec-' + ${app.id}">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <form method="get"
+                                                                      th:action="'/application/' + ${app.id} + '/reject'">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Reject Application</h5>
+                                                                        <button aria-label="Close" class="btn-close"
+                                                                                data-coreui-dismiss="modal"
+                                                                                type="button"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <label>Message</label>
+                                                                        <input class="form-control" name="message"
+                                                                               type="text">
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-outline-secondary"
+                                                                                data-coreui-dismiss="modal"
+                                                                                type="button">Close
+                                                                        </button>
+                                                                        <button class="btn btn-outline-danger"
+                                                                                type="submit">Reject
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <h4>Accepted</h4>
-                                <div th:each="app : ${applicationsList}"
+                                <div class="mb-3"
+                                     th:each="app : ${applicationsList}"
                                      th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).ACCEPTED)}">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5><a th:href="${'/profile/' + app.applicant.id}"
-                                                   th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
+                                            <h5>From: <a th:href="${'/profile/' + app.applicant.id}"
+                                                         th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
                                             </h5>
                                             <p th:text="${app.applicant.email}"></p>
-                                            <a th:href="${'/offer/' + app.jobOffer.id}"
-                                               th:text="${app.jobOffer.title}"></a>
+                                            <span>
+                                                On:
+                                                <a th:href="${'/offer/' + app.jobOffer.id}"
+                                                   th:text="${app.jobOffer.title}"></a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <h4>Rejected</h4>
-                                <div th:each="app : ${applicationsList}"
+                                <div class="mb-3"
+                                     th:each="app : ${applicationsList}"
                                      th:if="${app.status.equals(T(de.jinba.server.entity.enumuration.ApplicationStatus).REJECTED)}">
                                     <div class="card">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h5><a th:href="${'/profile/' + app.applicant.id}"
-                                                   th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
+                                        <div class="card-body">
+                                            <h5>From: <a th:href="${'/profile/' + app.applicant.id}"
+                                                         th:text="${app.applicant.firstName + ' ' + app.applicant.lastName}"></a>
                                             </h5>
                                             <p th:text="${app.applicant.email}"></p>
-                                            <a th:href="${'/offer/' + app.jobOffer.id}"
-                                               th:text="${app.jobOffer.title}"></a>
+                                            <span>
+                                                On:
+                                                <a th:href="${'/offer/' + app.jobOffer.id}"
+                                                   th:text="${app.jobOffer.title}"></a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <div th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).DEFAULT_USER)}"
-                     class="card-body">
+                <div class="card-body"
+                     th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).DEFAULT_USER)}">
                     JOBSUCHE
                 </div>
             </div>
