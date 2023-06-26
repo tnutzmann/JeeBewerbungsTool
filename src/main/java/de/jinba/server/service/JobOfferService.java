@@ -2,6 +2,7 @@ package de.jinba.server.service;
 
 import de.jinba.server.dto.JobOfferCreationRequest;
 import de.jinba.server.dto.JobOfferEditRequest;
+import de.jinba.server.entity.AppUser;
 import de.jinba.server.entity.Company;
 import de.jinba.server.entity.JobOffer;
 import de.jinba.server.entity.JobOfferSkill;
@@ -86,5 +87,25 @@ public class JobOfferService {
      */
     public JobOffer getById(String id) {
         return jobOfferRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Could not find JobOffer with id: %s", id)));
+    }
+
+    /**
+     * Finds job offers that are suggested for a user.
+     * @param user The {@link AppUser} that is requesting the job offers.
+     * @return List of job offers.
+     */
+    public List<JobOffer> findJobOfferSuggestionsByUser(AppUser user) {
+        return jobOfferRepository.findSuggestionsByUserId(user.getId());
+    }
+
+    /**
+     * Finds job offers by the given query string.
+     * @param user The {@link AppUser} that is requesting the job offers.
+     * @param queryString The query string.
+     * @return List of job offers.
+     */
+    public List<JobOffer> findJobOfferByQueryString(AppUser user,  String queryString) {
+        String sqlQueryString = String.format("%%%s%%", queryString);
+        return jobOfferRepository.findSearchResults(sqlQueryString, user.getId());
     }
 }
