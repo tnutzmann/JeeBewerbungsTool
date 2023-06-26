@@ -98,4 +98,10 @@ public class JobOfferDisplayController {
         model.addAttribute("company", company);
         return "joboffer";
     }
+
+    @GetMapping("/offer/my")
+    public String viewMyJobOffersPage(Model model) {
+        Company company = companyDetailsService.findCompanyOfCurrentUser();
+        return String.format("redirect:/company/%s/offer", company.getId());
+    }
 }
