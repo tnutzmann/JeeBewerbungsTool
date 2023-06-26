@@ -177,7 +177,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-3">
+            <div class="card mb-3" th:if="${isOwnCompany}">
                 <div class="card-body">
                     <h2>Accepted Applications</h2>
                     <div th:if="${!hasAcceptedApplications}" class="alert alert-danger alert-dismissible fade show">
@@ -197,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" th:if="${isOwnCompany}">
                 <div class="card-body">
                     <h2>Rejected Applications</h2>
                     <div th:if="${!hasRejectedApplications}" class="alert alert-danger alert-dismissible fade show">
