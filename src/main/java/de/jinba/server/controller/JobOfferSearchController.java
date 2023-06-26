@@ -7,50 +7,31 @@ import de.jinba.server.exception.UnauthorizedException;
 import de.jinba.server.service.AppUserDetailsService;
 import de.jinba.server.service.CompanyDetailsService;
 import de.jinba.server.service.JobOfferService;
-import de.jinba.server.util.ModelConfigurer;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * This controller handles the dashboard page.
- */
 @Controller
 @RequiredArgsConstructor
-@Slf4j
-public class DashboardController {
+public class JobOfferSearchController {
+    private final JobOfferService jobOfferService;
     private final AppUserDetailsService appUserDetailsService;
     private final CompanyDetailsService companyDetailsService;
-    private final JobOfferService jobOfferService;
-
-    /**
-     * Shows the dashboard page.
-     *
-     * @param model the model.
-     * @return the template.
-     */
-    @GetMapping("/dashboard")
-    public String viewDashboard(Model model) {
+    @GetMapping("/search")
+    public String searchForJobOffers(Model model,
+                                     @RequestParam(name = "q", required = false) String query){
         AppUser profile = appUserDetailsService.getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new UnauthorizedException("Unauthenticated user attempted to access the dashboard."));
-        model.addAttribute("profile", profile);
         if(profile.getRole().equals(Role.COMPANY_USER)) {
-                    model.addAttribute("applicationsList", companyDetailsService.findCompanyOfCurrentUser()
-                            .getJobOffers().stream()
-                            .map(JobOffer::getApplications)
-                            .flatMap(List::stream)
-                            .toList());
+            throw new UnauthorizedException("Company user attempted to access the job offer search.");
         }
-        if(profile.getRole().equals(Role.DEFAULT_USER)){
-            model.addAttribute("jobOffers", jobOfferService.findJobOfferSuggestionsByUser(profile));
-            model.addAttribute("hasSearched", false);
-        }
+        model.addAttribute("profile", profile);
+        model.addAttribute("jobOffers", jobOfferService.findJobOfferByQueryString(profile, query));
+        model.addAttribute("hasSearched", true);
         return "dashboard";
     }
-
 }

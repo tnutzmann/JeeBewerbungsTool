@@ -37,12 +37,12 @@
             <div class="row mt-3" sec:authorize="hasRole('DEFAULT_USER')">
                 <div class="card">
                     <div class="card-body">
-                        <h2>Open Applications</h2>
+                        <h2>Applications</h2>
+                        <hr>
                         <div class="alert alert-danger alert-dismissible fade show"
                              th:if="${profile.jobApplications.isEmpty()}">
-                            <span>You don't have any open Job Applications.</span>
+                            <span>You don't have any Job Applications.</span>
                         </div>
-                        <hr>
                         <div class="container">
                             <div class="row mb-2" th:each="jobApplication : ${profile.jobApplications}">
                                 <div class="col-6 d-flex align-items-center justify-content-start flex-row">
@@ -207,8 +207,50 @@
                     </div>
                 </div>
                 <div class="card-body"
-                     th:if="${profile.role.equals(T(de.jinba.server.entity.enumuration.Role).DEFAULT_USER)}">
-                    JOBSUCHE
+                     sec:authorize="hasRole('DEFAULT_USER')">
+                    <form method="get" th:action="@{/search}" class="mb-4">
+                        <div class="input-group">
+                            <input name="q" id="query" type="text" placeholder="Search for Job Offers"
+                                   class="form-control">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+
+                    </form>
+                    <h2 th:if="${hasSearched}" class="mb-2">Search Results</h2>
+                    <h2 th:if="${!hasSearched}" class="mb-2">Job Offer Suggestions</h2>
+                    <div class="alert alert-danger alert-dismissible fade show"
+                         th:if="${jobOffers.isEmpty()}">
+                        <span th:if="${hasSearched}">Your search does not fit any job offer.</span>
+                        <span th:if="${!hasSearched}">No suggestions can be made based on your profile. Please add skills to your profile or search.</span>
+                    </div>
+                    <div class="row row-cols-2 mb-2" th:if="${!jobOffers.isEmpty()}">
+                        <div class="col" th:each="offer : ${jobOffers}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${offer.title}"></h5>
+                                    <h6 class="card-subtitle text-muted">Skills</h6>
+                                    <div class="mb-2">
+                                        <div th:each="skill, skillStat : ${offer.skills}" th:unless="${skillStat.count > 3}" class="row">
+                                            <div class="col-6">
+                                                <ul class="mb-1">
+                                                    <li th:text="${skill.skill.name}"></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-6 d-flex align-items-center justify-content-end flex-row">
+                                                <span class="text-muted" th:text="${skill.level.years()}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="card-subtitle text-muted">Where?</h6>
+                                    <p class="card-text" th:text="${offer.location}"></p>
+                                    <div class="d-flex gap-3">
+                                        <a class="btn btn-outline-primary" th:href="'/offer/' + ${offer.id}">See more</a>
+                                        <a class="btn btn-outline-secondary" th:href="'/offer/' + ${offer.id} + '/apply'">Apply</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
