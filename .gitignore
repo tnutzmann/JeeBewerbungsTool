@@ -26,3 +26,14 @@ hs_err_pid*
 
 .idea/
 target/
+
+# latex
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.gz
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.hst
+docs/*.toc
+docs/*.ver
