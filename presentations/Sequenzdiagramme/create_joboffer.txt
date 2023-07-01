@@ -34,6 +34,7 @@ deactivate AppUserRepository
 CompanyDetailsService<--AppUserDetailsService: AppUser
 deactivate AppUserDetailsService
 CompanyDetailsService->CompanyDetailsService: findByAdminId(AppUser.id)
+activate CompanyDetailsService
 CompanyDetailsService->CompanyRepository: findByAdmin_Id()
 activate CompanyRepository
 CompanyRepository->Database: SELECT company
@@ -41,6 +42,7 @@ CompanyRepository<--Database: Company
 CompanyDetailsService<--CompanyRepository: Company
 deactivate CompanyRepository
 CompanyDetailsService<--CompanyDetailsService: Company
+deactivate CompanyDetailsService
 JobOfferCreationController<--CompanyDetailsService: Company
 deactivate CompanyDetailsService
 
@@ -72,4 +74,6 @@ activate JobOfferSkillRepository
 JobOfferSkillRepository->Database: INSERT JobOfferSkills
 deactivate JobOfferSkillRepository
 JobOfferCreationController<--JobOfferService: JobOffer
+deactivate JobOfferService
 User<--JobOfferCreationController: JobOffer
+deactivate JobOfferCreationController
