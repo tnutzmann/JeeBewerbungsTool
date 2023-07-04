@@ -28,11 +28,11 @@ ApplicationController->ApplicationService:applyForJobOffer()
 activate ApplicationService
 ApplicationService->JobOfferRepository:findByID(offerID)
 activate JobOfferRepository
-JobOfferRepository->Database:SELECT AppUser
-JobOfferRepository<--Database:AppUser
-ApplicationService<--JobOfferRepository:AppUser
+JobOfferRepository->Database:SELECT JobOffer
+JobOfferRepository<--Database:JobOffer
+ApplicationService<--JobOfferRepository:JobOffer
 deactivate JobOfferRepository
-ApplicationService->ApplicationService:applyForJobOffer(AppUser)
+ApplicationService->ApplicationService:applyForJobOffer(AppUser, JobOffer)
 activate ApplicationService
 ApplicationService->JobApplicationRepository:save(application)
 activate JobApplicationRepository
