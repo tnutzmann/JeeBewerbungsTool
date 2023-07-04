@@ -1,0 +1,45 @@
+title application
+actor User
+participant ApplicationController
+participant AppUserDetailsService
+participant ApplicationService
+participant AppUserRepository
+participant JobOfferRepository
+participant JobApplicationRepository
+
+
+database Database
+
+activate User
+activate Database
+User->ApplicationController:GET /offer/{JobOffer.id}/apply
+activate ApplicationController
+ApplicationController->AppUserDetailsService: getCurrentAuthenticatedUser()
+activate AppUserDetailsService
+AppUserDetailsService ->AppUserRepository:findById()
+activate AppUserRepository
+AppUserRepository->Database:SELECT AppUser
+AppUserRepository<--Database:AppUser
+AppUserDetailsService<--AppUserRepository:AppUser
+deactivate AppUserRepository
+ApplicationController<--AppUserDetailsService:AppUser
+deactivate AppUserDetailsService
+ApplicationController->ApplicationService:applyForJobOffer()
+activate ApplicationService
+ApplicationService->JobOfferRepository:findByID(offerID)
+activate JobOfferRepository
+JobOfferRepository->Database:SELECT AppUser
+JobOfferRepository<--Database:AppUser
+ApplicationService<--JobOfferRepository:AppUser
+deactivate JobOfferRepository
+ApplicationService->ApplicationService:applyForJobOffer(AppUser)
+activate ApplicationService
+ApplicationService->JobApplicationRepository:save(application)
+activate JobApplicationRepository
+JobApplicationRepository->Database:INSERT application
+deactivate JobApplicationRepository
+deactivate ApplicationService
+deactivate ApplicationService
+
+User<--ApplicationController: REDIRECT /offer/{id}/
+deactivate ApplicationController
