@@ -9,7 +9,7 @@ import de.jinba.server.entity.enumuration.Role;
 import de.jinba.server.exception.UnauthorizedException;
 import de.jinba.server.service.AppUserDetailsService;
 import de.jinba.server.service.CompanyDetailsService;
-import de.jinba.server.service.JobOfferDetailsService;
+import de.jinba.server.service.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JobOfferDisplayController {
     private final CompanyDetailsService companyDetailsService;
-    private final JobOfferDetailsService jobOfferDetailsService;
+    private final JobOfferService jobOfferService;
     private final AppUserDetailsService appUserDetailsService;
 
     /**
@@ -50,7 +50,7 @@ public class JobOfferDisplayController {
         model.addAttribute("isOwnCompany", isOwnCompany);
         // If the user is a default user, add the ids of the job offers the user has not applied to.
         if (currentUser.getRole() == Role.DEFAULT_USER) {
-            model.addAttribute("unappliedJobIds", jobOfferDetailsService.getAllUnappliedJobOffersByCompany(currentUser, company)
+            model.addAttribute("unappliedJobIds", jobOfferService.getAllUnappliedJobOffersByCompany(currentUser, company)
                     .stream()
                     .map(JobOffer::getId)
                     .toList());
@@ -70,7 +70,7 @@ public class JobOfferDisplayController {
                                    @PathVariable String id) {
         AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
                 .orElseThrow(() -> new UnauthorizedException("Unauthorized user tried to access job offer page."));
-        JobOffer jobOffer = jobOfferDetailsService.getById(id);
+        JobOffer jobOffer = jobOfferService.getById(id);
         Company company = jobOffer.getCompany();
         boolean isOwnCompany = company.getAdmin().getUsername().equals(currentUser.getUsername());
         // If the user is a default user, check if the user has applied to the job offer.
