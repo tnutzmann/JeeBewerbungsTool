@@ -21,7 +21,7 @@ public class ApplicationService {
     private final AppUserDetailsService appUserDetailsService;
     private final JobApplicationRepository jobApplicationRepository;
     private final JobOfferRepository jobOfferRepository;
-    private final JobOfferDetailsService jobOfferDetailsService;
+    private final JobOfferService jobOfferService;
 
     /**
      * Applies user to job offer.
@@ -42,7 +42,7 @@ public class ApplicationService {
      * @param offer Job offer.
      */
     public void applyForJobOffer(AppUser user, JobOffer offer) {
-        if (jobOfferDetailsService.hasUserAppliedToJobOffer(user, offer)) {
+        if (jobOfferService.hasUserAppliedToJobOffer(user, offer)) {
             throw new ParameterInvalidException("You have already applied to this job offer");
         }
         JobApplication application = JobApplication.builder()
