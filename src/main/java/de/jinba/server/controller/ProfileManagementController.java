@@ -216,8 +216,10 @@ public class ProfileManagementController {
     public String addSkill(@ModelAttribute("addSkillForm") @Valid SkillAddRequest skillAddRequest,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
+        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser()
+                .orElseThrow(() -> new UnauthorizedException("Unauthenticated user attempted to add skill"));
         // Check if the skill is already added to the user. If so reject the value.
-        if (skillService.hasCurrentUserSkill(skillAddRequest.getSkillName())) {
+        if (skillService.hasUserSkill(user, skillAddRequest.getSkillName())) {
             bindingResult.rejectValue("skillName", "error.addSkillForm", "Already has skill");
         }
         if (bindingResult.hasErrors()) {
@@ -226,8 +228,6 @@ public class ProfileManagementController {
                     .with(SKILL_ADD_FORM, skillAddRequest);
             return "redirect:/profile/edit";
         }
-        AppUser user = appUserDetailsService.getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new UnauthorizedException("Unauthenticated user attempted to add skill"));
         if (user.getRole() == Role.COMPANY_USER) {
             throw new UnauthorizedException("Only users can add skills");
         }
