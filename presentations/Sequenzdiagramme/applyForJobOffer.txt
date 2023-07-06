@@ -1,4 +1,4 @@
-title application
+title applyForJobOffer
 actor User
 participant ApplicationController
 participant AppUserDetailsService
@@ -12,34 +12,34 @@ database Database
 
 activate User
 activate Database
-User->ApplicationController:GET /offer/{JobOffer.id}/apply
+User->ApplicationController:GET /offer/{jobOfferId}/apply
 activate ApplicationController
 ApplicationController->AppUserDetailsService: getCurrentAuthenticatedUser()
 activate AppUserDetailsService
 AppUserDetailsService ->AppUserRepository:findById()
 activate AppUserRepository
 AppUserRepository->Database:SELECT AppUser
-AppUserRepository<--Database:AppUser
-AppUserDetailsService<--AppUserRepository:AppUser
+AppUserRepository<--Database:appUser
+AppUserDetailsService<--AppUserRepository:appUser
 deactivate AppUserRepository
-ApplicationController<--AppUserDetailsService:AppUser
+ApplicationController<--AppUserDetailsService:appUser
 deactivate AppUserDetailsService
-ApplicationController->ApplicationService:applyForJobOffer()
+ApplicationController->ApplicationService:applyForJobOffer(appUser, jobOfferId)
 activate ApplicationService
-ApplicationService->JobOfferRepository:findByID(offerID)
+ApplicationService->JobOfferRepository:findById(jobOfferId)
 activate JobOfferRepository
 JobOfferRepository->Database:SELECT JobOffer
-JobOfferRepository<--Database:JobOffer
-ApplicationService<--JobOfferRepository:JobOffer
+JobOfferRepository<--Database:jobOffer
+ApplicationService<--JobOfferRepository:jobOffer
 deactivate JobOfferRepository
-ApplicationService->ApplicationService:applyForJobOffer(AppUser, JobOffer)
+ApplicationService->ApplicationService:applyForJobOffer(appUser, jobOffer)
 activate ApplicationService
-ApplicationService->JobApplicationRepository:save(application)
+ApplicationService->JobApplicationRepository:save(jobApplication)
 activate JobApplicationRepository
-JobApplicationRepository->Database:INSERT application
+JobApplicationRepository->Database:INSERT JobApplication
 deactivate JobApplicationRepository
 deactivate ApplicationService
 deactivate ApplicationService
 
-User<--ApplicationController: REDIRECT /offer/{id}/
+User<--ApplicationController: REDIRECT /offer/{jobOfferId}/
 deactivate ApplicationController
