@@ -10,33 +10,33 @@ database Database
 
 activate User
 activate Database
-User->ApplicationController:GET /application/{JobOffer.id}/accept
+User->ApplicationController:GET /application/{applicationId}/accept
 activate ApplicationController
-ApplicationController->ApplicationService:acceptApplication(JobOffer.id, message)
-activate ApplicationService
-ApplicationService->JobApplicationRepository:findById(application.id)
-activate JobApplicationRepository
-JobApplicationRepository->Database:SELECT JobApplication
-JobApplicationRepository<--Database:JobApplication
-ApplicationService<--JobApplicationRepository:JobApplication
-deactivate JobApplicationRepository
-
-ApplicationService->AppUserDetailsService: getCurrentAuthenticatedUser()
+ApplicationController->AppUserDetailsService: getCurrentAuthenticatedUser()
 activate AppUserDetailsService
 AppUserDetailsService ->AppUserRepository:findById()
 activate AppUserRepository
 AppUserRepository->Database:SELECT AppUser
-AppUserRepository<--Database:AppUser
-AppUserDetailsService<--AppUserRepository:AppUser
+AppUserRepository<--Database:appUser
+AppUserDetailsService<--AppUserRepository:appUser
 deactivate AppUserRepository
-ApplicationService<--AppUserDetailsService:AppUser
+ApplicationController<--AppUserDetailsService:appUser
 deactivate AppUserDetailsService
 
-ApplicationService->ApplicationService:application.setStatus(ApplicationStatus.ACCEPTED)
-ApplicationService->ApplicationService:application.setAnswerMessage(message)
-ApplicationService->JobApplicationRepository:save(appilcation)
+ApplicationController->ApplicationService:acceptApplication(applicationId, message, appUser)
+activate ApplicationService
+ApplicationService->JobApplicationRepository:findById(applicationId)
 activate JobApplicationRepository
-JobApplicationRepository->Database:INSERT application
+JobApplicationRepository->Database:SELECT JobApplication
+JobApplicationRepository<--Database:jobApplication
+ApplicationService<--JobApplicationRepository:jobApplication
+deactivate JobApplicationRepository
+
+ApplicationService->ApplicationService:jobApplication.setStatus(ACCEPTED)
+ApplicationService->ApplicationService:jobApplication.setAnswerMessage(message)
+ApplicationService->JobApplicationRepository:save(jobApplication)
+activate JobApplicationRepository
+JobApplicationRepository->Database:UPDATE JobApplication
 deactivate JobApplicationRepository
 deactivate ApplicationService
 
