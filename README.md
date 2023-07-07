@@ -9,7 +9,7 @@ The database of the remote application is already with test data.
 
 1. Start the Database
 ```shell
-docker-compose up
+docker-compose -f docker-compose-dev-local.yml up -d
 ```
 2. Start the application
 ```shell
