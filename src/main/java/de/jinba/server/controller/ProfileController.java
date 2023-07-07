@@ -7,7 +7,7 @@ import de.jinba.server.entity.enumuration.Role;
 import de.jinba.server.exception.EntityNotFoundException;
 import de.jinba.server.service.AppUserDetailsService;
 import de.jinba.server.service.CompanyDetailsService;
-import de.jinba.server.service.JobOfferDetailsService;
+import de.jinba.server.service.JobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ProfileController {
     private final AppUserDetailsService appUserDetailsService;
     private final CompanyDetailsService companyDetailsService;
-    private final JobOfferDetailsService jobOfferDetailsService;
+    private final JobOfferService jobOfferService;
 
     /**
      * Redirects to the profile page of the current user. If the current user is a company user, the company page is
@@ -93,7 +93,7 @@ public class ProfileController {
         model.addAttribute("isOwnProfile", isOwnCompany);
         // Get all unapplied job offers of the company. This is used to show the "apply" button on the job offer cards.
         if (currentUser.getRole() == Role.DEFAULT_USER) {
-            model.addAttribute("unappliedJobIds", jobOfferDetailsService.getAllUnappliedJobOffersByCompany(currentUser, company)
+            model.addAttribute("unappliedJobIds", jobOfferService.getAllUnappliedJobOffersByCompany(currentUser, company)
                     .stream()
                     .map(JobOffer::getId).toList());
         }

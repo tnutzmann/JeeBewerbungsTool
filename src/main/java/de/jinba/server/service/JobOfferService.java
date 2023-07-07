@@ -26,9 +26,7 @@ import java.util.List;
 public class JobOfferService {
     private final JobOfferRepository jobOfferRepository;
     private final JobOfferSkillRepository jobOfferSkillRepository;
-    private final CompanyDetailsService companyDetailsService;
     private final SkillService skillService;
-    private final AppUserDetailsService appUserDetailsService;
 
     /**
      * Adds new job offer.
@@ -74,19 +72,48 @@ public class JobOfferService {
         jobOffer.setDescription(request.getDescription());
         jobOffer.setLocation(request.getLocation());
 
-        JobOffer savedJobOffer = jobOfferRepository.save(jobOffer);
-
-        return savedJobOffer;
+        return jobOfferRepository.save(jobOffer);
     }
 
     /**
      * Gets a job offer by id.
      *
-     * @param id Id of job offer.
+     * @param id ID of job offer.
      * @return Job offer.
      */
     public JobOffer getById(String id) {
         return jobOfferRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Could not find JobOffer with id: %s", id)));
+    }
+
+    /**
+     * Gets all job offers.
+     *
+     * @return List of job offers.
+     */
+    public List<JobOffer> getAll() {
+        return jobOfferRepository.findAll();
+    }
+
+    /**
+     * Gets all job offers by company that the user has not yet applied to.
+     *
+     * @param user      User that is requesting job offers.
+     * @param companyId ID of company.
+     * @return List of job offers that the user has not yet applied to.
+     */
+    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, String companyId) {
+        return jobOfferRepository.findAllUnappliedJobOffersByCompanyAndUser(user.getId(), companyId);
+    }
+
+    /**
+     * Gets all job offers by company that the user has not yet applied to.
+     *
+     * @param user    User that is requesting job offers.
+     * @param company the company.
+     * @return List of job offers that the user has not yet applied to.
+     */
+    public List<JobOffer> getAllUnappliedJobOffersByCompany(AppUser user, Company company) {
+        return this.getAllUnappliedJobOffersByCompany(user, company.getId());
     }
 
     /**
@@ -107,5 +134,20 @@ public class JobOfferService {
     public List<JobOffer> findJobOfferByQueryString(AppUser user,  String queryString) {
         String sqlQueryString = String.format("%%%s%%", queryString);
         return jobOfferRepository.findSearchResults(sqlQueryString, user.getId());
+    }
+
+    /**
+     * Checks if user has applied to job offer.
+     *
+     * @param user     User that is requesting the check.
+     * @param jobOffer Job offer.
+     * @return True if user has applied to job offer, false otherwise.
+     */
+    public boolean hasUserAppliedToJobOffer(AppUser user, JobOffer jobOffer) {
+        return jobOffer.getApplications()
+                .stream()
+                .anyMatch(application -> application.getApplicant()
+                        .getId()
+                        .equals(user.getId()));
     }
 }

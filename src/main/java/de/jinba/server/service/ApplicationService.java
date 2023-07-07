@@ -18,10 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ApplicationService {
-    private final AppUserDetailsService appUserDetailsService;
     private final JobApplicationRepository jobApplicationRepository;
     private final JobOfferRepository jobOfferRepository;
-    private final JobOfferDetailsService jobOfferDetailsService;
+    private final JobOfferService jobOfferService;
 
     /**
      * Applies user to job offer.
@@ -42,7 +41,7 @@ public class ApplicationService {
      * @param offer Job offer.
      */
     public void applyForJobOffer(AppUser user, JobOffer offer) {
-        if (jobOfferDetailsService.hasUserAppliedToJobOffer(user, offer)) {
+        if (jobOfferService.hasUserAppliedToJobOffer(user, offer)) {
             throw new ParameterInvalidException("You have already applied to this job offer");
         }
         JobApplication application = JobApplication.builder()
@@ -58,12 +57,11 @@ public class ApplicationService {
      *
      * @param id      Id of application.
      * @param message Message to applicant.
+     * @param currentUser Current user.
      */
-    public void rejectApplication(String id, String message) {
+    public void rejectApplication(String id, String message, AppUser currentUser) {
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Application does not exist"));
-        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new UnauthorizedException("You are not authorized to reject this application"));
         if (!application.getJobOffer().getCompany().getAdmin().getId().equals(currentUser.getId())) {
             throw new UnauthorizedException("You are not authorized to accept this application");
         }
@@ -77,12 +75,11 @@ public class ApplicationService {
      *
      * @param id      Id of application.
      * @param message Message to applicant.
+     * @param currentUser Current user.
      */
-    public void acceptApplication(String id, String message) {
+    public void acceptApplication(String id, String message, AppUser currentUser) {
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Application does not exist"));
-        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new UnauthorizedException("You are not authorized to reject this application"));
         if (!application.getJobOffer().getCompany().getAdmin().getId().equals(currentUser.getId())) {
             throw new UnauthorizedException("You are not authorized to accept this application");
         }

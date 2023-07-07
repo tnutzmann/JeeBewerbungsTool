@@ -1,0 +1,44 @@
+title acceptApplication
+actor User
+participant ApplicationController
+participant ApplicationService
+participant AppUserDetailsService
+participant AppUserRepository
+participant JobApplicationRepository
+
+database Database
+
+activate User
+activate Database
+User->ApplicationController:GET /application/{applicationId}/accept
+activate ApplicationController
+ApplicationController->AppUserDetailsService: getCurrentAuthenticatedUser()
+activate AppUserDetailsService
+AppUserDetailsService ->AppUserRepository:findById()
+activate AppUserRepository
+AppUserRepository->Database:SELECT AppUser
+AppUserRepository<--Database:appUser
+AppUserDetailsService<--AppUserRepository:appUser
+deactivate AppUserRepository
+ApplicationController<--AppUserDetailsService:appUser
+deactivate AppUserDetailsService
+
+ApplicationController->ApplicationService:acceptApplication(applicationId, message, appUser)
+activate ApplicationService
+ApplicationService->JobApplicationRepository:findById(applicationId)
+activate JobApplicationRepository
+JobApplicationRepository->Database:SELECT JobApplication
+JobApplicationRepository<--Database:jobApplication
+ApplicationService<--JobApplicationRepository:jobApplication
+deactivate JobApplicationRepository
+
+ApplicationService->ApplicationService:jobApplication.setStatus(ACCEPTED)
+ApplicationService->ApplicationService:jobApplication.setAnswerMessage(message)
+ApplicationService->JobApplicationRepository:save(jobApplication)
+activate JobApplicationRepository
+JobApplicationRepository->Database:UPDATE JobApplication
+deactivate JobApplicationRepository
+deactivate ApplicationService
+
+User<--ApplicationController: REDIRECT /dashboard
+deactivate ApplicationController

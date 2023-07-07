@@ -39,14 +39,18 @@ public class ApplicationController {
 
     @GetMapping("/application/{id}/accept")
     public String acceptApplication(@PathVariable String id, @RequestParam String message) {
-        applicationService.acceptApplication(id, message);
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
+                .orElseThrow(() -> new UnauthorizedException("Unauthorized user attempted to accept application"));
+        applicationService.acceptApplication(id, message, currentUser);
         return "redirect:/dashboard";
     }
 
     @GetMapping("/application/{id}/reject")
     public String rejectApplication(@PathVariable String id,
                                     @RequestParam String message) {
-        applicationService.rejectApplication(id, message);
+        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
+                .orElseThrow(() -> new UnauthorizedException("Unauthorized user attempted to reject application"));
+        applicationService.rejectApplication(id, message, currentUser);
         return "redirect:/dashboard";
     }
 
