@@ -8,7 +8,7 @@
 \graphicspath{{./img/}}
 
 \title{Technische Dokumentation}
-\author{Max Riedel \and Tony Nutzmann \and Mathias Enderlein}
+\author{Max Riedel \and Tony Nutzmann \and Matthias Enderlein}
 
 \begin{document}
     \begin{titlepage}
@@ -20,7 +20,7 @@
         {vorgelegt von}\\[2mm]
         {\large Max Riedel}\\[2mm]
         {\large Tony Nutzmann}\\[2mm]
-        {\large Mathias Enderlein}\\[50mm]
+        {\large Matthias Enderlein}\\[50mm]
 
         \includegraphics[width=75mm]{img/Technische_Hochschule_Brandenburg_Logo.svg.png}\\[10mm]
 
@@ -38,6 +38,8 @@
 
     \begin{versionhistory}
         \vhEntry{0.1}{28.6.2023}{Max Riedel}{Erstellung}
+        \vhEntry{0.2}{5.7.2023}{Matthias Enderlein}{Füge ER-Diagramm und 2 Sequenzdiagramme hinzu und korrigiere einige Fehler}
+        \vhEntry{1}{6.7.2023}{Tony Nutzmann}{Füge ein Sequenzdiagramm hinzu und korrigiere einige Fehler}
     \end{versionhistory}
     \newpage
     \tableofcontents
@@ -56,13 +58,13 @@
     \section{Anwendungsfälle}
     
 
-    \subsection{Aktoren}
+    \subsection{Akteure}
 
     \begin{table}[htbp]
         \label{tab:aktoren}
         \begin{tabular}{|p{.25\textwidth}|p{.70\textwidth}|}
             \hline
-            \textbf{Aktor} & \textbf{Beschreibung} \\
+            \textbf{Akteur} & \textbf{Beschreibung} \\
             \hline
             \hline
             Jobsuchender & Ein Jobsuchender ist eine Person, die auf der Suche nach einem Job ist. \\
@@ -78,13 +80,13 @@
     \begin{longtable}[htbp]{|p{.20\textwidth}|p{.20\textwidth}|p{.40\textwidth}|p{.10\textwidth}|}
        
         \hline
-        \textbf{Usecase}&\textbf{Aktor}&\textbf{Beschreibung}&\textbf{Done}\\
+        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Fertig}\\
         \hline
         \hline
         \endfirsthead
 
         \hline
-        \textbf{Usecase}&\textbf{Aktor}&\textbf{Beschreibung}&\textbf{Done}\\
+        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Fertig}\\
         \hline
         \hline
         \endhead
@@ -134,13 +136,14 @@
         \item Template Engine: Thymeleaf
         \item Authentifizierung: Sessions mit Spring Security
         \item Frontend: HTML, CSS, JavaScript
-        \item CSS-Framework: Coreui 4
+        \item CSS-Framework: CoreUI 4
         \item Build-Tool: Maven
     \end{itemize}
 
+    \newpage
     \subsection{Architektur}
 
-    Die Abbildung \ref{fig:Architektur} zeigt ansatzweise unser Architekturdiagramm. Wir haben uns für eine 3 bzw. 5 Schichten Architektur entschieden.
+    Die Abbildung \ref{fig:Architektur} veranschaulicht unsere Architektur. Wir haben uns für eine 3 bzw. 5 Schichten Architektur entschieden.
     Die 3 zentralen Schichten bestehen aus:
     \begin{itemize}
         \item Präsentationlayer mit den Controllern
@@ -158,11 +161,10 @@
         \label{fig:Architektur}
     \end{figure}
     
-
     \subsection{Entity Relationship Diagramm}
 
-    Im folgenden ist das ER-Diagramm zu sehen. Es zeigt die Beziehungen zwischen den einzelnen Entitäten.
-    Als zentralen User existiert ein 'AppUser', der sowohl ein Jobsuchender als auch ein Unternehmen sein kann.
+    In Abbildung \ref{fig:ERM} ist das ER-Diagramm zu sehen. Es zeigt die Beziehungen zwischen den einzelnen Entitäten.
+    Als zentraler Benutzer, existiert ein 'AppUser', der sowohl ein Jobsuchender als auch ein Unternehmen sein kann.
     Das wird durch seine Rolle bestimmt. 
     
     Ein Jobsuchender kann sich auf ein Jobangebot ('JobOffer') bewerben ('JobApplication'). Zudem kann er 
@@ -181,13 +183,24 @@
 
     \subsection{Sequenzdiagramme}
     
-    Im Folgenden sind Sequenzdiagramme für 3 wichtige Anwendungsfälle beispielhaft zu sehen. Dabei wird die Kommunikation zwischen
-    den verschieden Schichten der Anwendung dargestellt.
+    Im Folgenden sind Sequenzdiagramme für drei wichtige Anwendungsfälle zu sehen. In diesen wird die Kommunikation zwischen
+    den verschieden Schichten der Anwendung dargestellt. Die Abbildungen \ref{fig:Apply} bis \ref{fig:Accept} liegen im Anhang bei.
+
+    \subsubsection{Bewerben}
+
+    Die Abbildung \ref{fig:Apply} zeigt den Kommunikationsablauf, wenn sich ein Jobsuchender auf ein Jobangebot bewirbt. Dafür muss zuerst
+    der aktuell angemeldete Benutzer ermittelt werden, dann wird eine neue Bewerbung erstellt und in der Datenbank gespeichert.
+
+    \begin{figure}[h!]
+        \includegraphics[width = \linewidth]{sequence/applyForJobOfferSequenzDiagramm.png}
+        \caption{Sequenzdiagramm - Bewerben}
+        \label{fig:Apply}
+    \end{figure}
 
     \subsubsection{Jobangebot erstellen}
 
-    Die Abbildung \ref{fig:CreateJobOffer} zeigt die Kommunikation, wenn ein Unternehmen ein Jobangebot erstellt. Dafür muss zuerst
-    die Firma des aktuell angemeldeten Benutzers ermittelt werden. Dann wird ein neues Jobangebot erstellt, mit den im Form
+    Die Abbildung \ref{fig:CreateJobOffer} zeigt den Kommunikationsablauf, wenn ein Unternehmen ein Jobangebot erstellt. Dafür muss zuerst
+    die Firma des aktuell angemeldeten Benutzers ermittelt werden. Anschließend wird ein neues Jobangebot erstellt, mit den im Formular
     übermittelten Daten. Dabei ist zu beachten, dass die Skills, die noch nicht existieren, erstmal erstellt werden müssen
     und dann dem Jobangebot hinzugefügt werden. Zuletzt wird das Jobangebot in der Datenbank gespeichert.
 
@@ -197,21 +210,12 @@
         \label{fig:CreateJobOffer}
     \end{figure}
 
-    \subsubsection{Bewerben}
 
-    Die Abbildung \ref{fig:Apply} zeigt die Kommunikation, wenn sich ein Jobsuchender auf ein Jobangebot bewirbt. Dafür muss zuerst
-    der aktuell angemeldete Benutzer ermittelt werden. Dann wird eine neue Bewerbung erstellt und in der Datenbank gespeichert.
-
-    \begin{figure}[h!]
-        \includegraphics[width = \linewidth]{sequence/applyForJobOfferSequenzDiagramm.png}
-        \caption{Sequenzdiagramm - Bewerben}
-        \label{fig:Apply}
-    \end{figure}
 
 
     \subsubsection{Bewerbung annehmen}
 
-    Die Abbildung \ref{fig:Accept} zeigt die Kommunikation, wenn ein Unternehmen eine Bewerbung auf ein Jobangebot annimmt. Dafür muss zuerst
+    Die Abbildung \ref{fig:Accept} zeigt den Kommunikationsablauf, wenn ein Unternehmen eine Bewerbung auf ein Jobangebot annimmt. Dafür muss zuerst
     der aktuell angemeldete Benutzer ermittelt werden, um zu überprüfen, dass auch nur der Admin die Bewerbung annimmt. 
     Dann wird die Bewerbung aus der Datenbank geladen, der Status auf 'ACCEPTED' gesetzt und die vom Admin übermittelte Nachricht eingetragen.
     Zuletzt wird die Bewerbung wieder in der Datenbank gespeichert.
