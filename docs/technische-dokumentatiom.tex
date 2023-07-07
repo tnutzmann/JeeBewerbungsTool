@@ -46,8 +46,8 @@
 
     Das Projekt Jinba, ist eine Jobplattform, die es Jobsuchenden und Unternehmen
     erleichtern soll zusammen zu finden und eine erste Kommunikationsaufnahme zu erreichen.
-    Um das zu erreichen, soll die Vermittlung vorranig über die Fähigkeiten (Skills) der Jobsuchenden
-    und gefordereten Fähigkeiten in den Jobangeboten eines Unternehmens erfolgen.
+    Um das zu erreichen, soll die Vermittlung vorrangig über die Fähigkeiten (Skills) der Jobsuchenden
+    und geforderten Fähigkeiten in den Jobangeboten eines Unternehmens erfolgen.
 
     Dabei ist wichtig anzumerken, dass die Plattform keinen kompletten Bewerbungsprozess
     abbilden soll, sondern nur die erste Kontaktaufnahme zwischen Unternehmen und Jobsuchenden.
@@ -121,8 +121,8 @@
         \hline
         Bewerbung ablehnen& Unternehmen & Ein Unternehmen kann eine Bewerbung auf ein Jobangebot ablehnen. & Ja \\
     \end{longtable}
-    \newpage
 
+    \newpage
     \section{Technische Umsetzung}
 
     \subsection{Technologien}
@@ -140,12 +140,84 @@
 
     \subsection{Architektur}
 
-    \includegraphics[scale=0.35]{Architektur.png}
+    Die Abbildung \ref{fig:Architektur} zeigt ansatzweise unser Architekturdiagramm. Wir haben uns für eine 3 bzw. 5 Schichten Architektur entschieden.
+    Die 3 zentralen Schichten bestehen aus:
+    \begin{itemize}
+        \item Präsentationlayer mit den Controllern
+        \item Businesslayer mit den Services
+        \item Data Access Layer mit den Repositories
+    \end{itemize}
+
+    Drumherum gibt es dann noch zum einen die View Schicht, welche für das Rendern der HTML-Seiten zuständig ist. Und zum anderen
+    die Persistenzschicht, welche bei uns eine MySQL Datenbank ist.
+
+
+    \begin{figure}[htbp]
+        \includegraphics[width = \linewidth]{Architektur.png}
+        \caption{Architekturdiagramm}
+        \label{fig:Architektur}
+    \end{figure}
+    
 
     \subsection{Entity Relationship Diagramm}
 
-    \includegraphics[scale=0.26]{erm2.png}
+    Im folgenden ist das ER-Diagramm zu sehen. Es zeigt die Beziehungen zwischen den einzelnen Entitäten.
+    Als zentralen User existiert ein 'AppUser', der sowohl ein Jobsuchender als auch ein Unternehmen sein kann.
+    Das wird durch seine Rolle bestimmt. 
+    
+    Ein Jobsuchender kann sich auf ein Jobangebot ('JobOffer') bewerben ('JobApplication'). Zudem kann er 
+    seine Fähigkeiten ('Skill') angeben. Das wird mittels einer Verknüpfungstabelle ('AppUserSkill') realisiert, die zudem
+    das Level des Skills speichert.
+
+    Ein Unternehmen wird von einem AppUser administriert. Dieser kann dann für das Unternehmen ein Jobangebot erstellen ('JobOffer'). Dabei kann es Skills ('Skill') angeben, die ein Jobsuchender
+    haben sollte. Auch hier wird das Level des Skills gespeichert ('JobOfferSkill').
+    \\[4mm]
+    \begin{figure}[htbp]
+        \includegraphics[width = \linewidth]{ERM.png}
+        \caption{Entity Relationship Diagramm}
+        \label{fig:ERM}
+    \end{figure}
+    
 
     \subsection{Sequenzdiagramme}
+    
+    Im Folgenden sind Sequenzdiagramme für 3 wichtige Anwendungsfälle beispielhaft zu sehen. Dabei wird die Kommunikation zwischen
+    den verschieden Schichten der Anwendung dargestellt.
 
+    \subsubsection{Jobangebot erstellen}
+
+    Die Abbildung \ref{fig:CreateJobOffer} zeigt die Kommunikation, wenn ein Unternehmen ein Jobangebot erstellt. Dafür muss zuerst
+    die Firma des aktuell angemeldeten Benutzers ermittelt werden. Dann wird ein neues Jobangebot erstellt, mit den im Form
+    übermittelten Daten. Dabei ist zu beachten, dass die Skills, die noch nicht existieren, erstmal erstellt werden müssen
+    und dann dem Jobangebot hinzugefügt werden. Zuletzt wird das Jobangebot in der Datenbank gespeichert.
+
+    \begin{figure}[h!]
+        \includegraphics[width = \linewidth]{sequence/JobOfferCreateSequenzDiagramm.png}
+        \caption{Sequenzdiagramm - Jobangebot erstellen}
+        \label{fig:CreateJobOffer}
+    \end{figure}
+
+    \subsubsection{Bewerben}
+
+    Die Abbildung \ref{fig:Apply} zeigt die Kommunikation, wenn sich ein Jobsuchender auf ein Jobangebot bewirbt. Dafür muss zuerst
+    der aktuell angemeldete Benutzer ermittelt werden. Dann wird eine neue Bewerbung erstellt und in der Datenbank gespeichert.
+
+    \begin{figure}[h!]
+        \includegraphics[width = \linewidth]{sequence/applyForJobOfferSequenzDiagramm.png}
+        \caption{Sequenzdiagramm - Bewerben}
+        \label{fig:Apply}
+    \end{figure}
+
+
+    \subsubsection{Bewerbung annehmen}
+
+    Die Abbildung \ref{fig:Accept} zeigt die Kommunikation, wenn ein Unternehmen eine Bewerbung auf ein Jobangebot annimmt. Dafür muss zuerst
+    der aktuell angemeldete Benutzer ermittelt werden, um zu überprüfen, dass auch nur der Admin die Bewerbung annimmt. 
+    Dann wird die Bewerbung aus der Datenbank geladen, der Status auf 'ACCEPTED' gesetzt und die vom Admin übermittelte Nachricht eingetragen.
+    Zuletzt wird die Bewerbung wieder in der Datenbank gespeichert.
+    \begin{figure}[h!]
+        \includegraphics[width = \linewidth]{sequence/acceptApplicationSequenzDiagramm.png}
+        \caption{Sequenzdiagramm - Bewerbung annehmen}
+        \label{fig:Accept}
+    \end{figure}
 \end{document}
