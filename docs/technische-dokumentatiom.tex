@@ -37,19 +37,20 @@
     \end{titlepage}
 
     \begin{versionhistory}
-        \vhEntry{0.1}{28.6.2023}{Max Riedel}{Erstellung}
-        \vhEntry{0.2}{5.7.2023}{Matthias Enderlein}{Füge ER-Diagramm und 2 Sequenzdiagramme hinzu und korrigiere einige Fehler}
-        \vhEntry{1}{6.7.2023}{Tony Nutzmann}{Füge ein Sequenzdiagramm hinzu und korrigiere einige Fehler}
+        \vhEntry{0.1}{28.06.2023}{Max Riedel}{Erstellung}
+        \vhEntry{0.2}{07.07.2023}{Matthias Enderlein}{Füge ER-Diagramm und 2 Sequenzdiagramme hinzu und korrigiere einige Fehler}
+        \vhEntry{1.0}{07.07.2023}{Tony Nutzmann}{Füge ein Sequenzdiagramm hinzu und korrigiere einige Fehler}
     \end{versionhistory}
     \newpage
     \tableofcontents
     \newpage
     \section{Einführung}
 
+
     Das Projekt Jinba, ist eine Jobplattform, die es Jobsuchenden und Unternehmen
-    erleichtern soll zusammen zu finden und eine erste Kommunikationsaufnahme zu erreichen.
-    Um das zu erreichen, soll die Vermittlung vorrangig über die Fähigkeiten (Skills) der Jobsuchenden
-    und geforderten Fähigkeiten in den Jobangeboten eines Unternehmens erfolgen.
+    erleichtern soll, zusammenzufinden, um eine erste Kommunikationsaufnahme zu erreichen.
+    Dies wird durch die Vermittlung der Fähigkeiten (Skills) des Jobsuchenden
+    und der geforderten Fähigkeiten in den Jobangeboten eines Unternehmens umgesetzt.
 
     Dabei ist wichtig anzumerken, dass die Plattform keinen kompletten Bewerbungsprozess
     abbilden soll, sondern nur die erste Kontaktaufnahme zwischen Unternehmen und Jobsuchenden.
@@ -77,16 +78,16 @@
 
     \subsection{Anwendungsfälle}
 
-    \begin{longtable}[htbp]{|p{.20\textwidth}|p{.20\textwidth}|p{.40\textwidth}|p{.10\textwidth}|}
+    \begin{longtable}[htbp]{|p{.20\textwidth}|p{.20\textwidth}|p{.38\textwidth}|p{.12\textwidth}|}
        
         \hline
-        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Fertig}\\
+        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Erledigt}\\
         \hline
         \hline
         \endfirsthead
 
         \hline
-        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Fertig}\\
+        \textbf{Usecase}&\textbf{Akteur}&\textbf{Beschreibung}&\textbf{Erledigt}\\
         \hline
         \hline
         \endhead
@@ -136,7 +137,7 @@
         \item Template Engine: Thymeleaf
         \item Authentifizierung: Sessions mit Spring Security
         \item Frontend: HTML, CSS, JavaScript
-        \item CSS-Framework: CoreUI 4
+        \item CSS-Framework: CoreUI 4.2.6
         \item Build-Tool: Maven
     \end{itemize}
 
@@ -205,7 +206,7 @@
     und dann dem Jobangebot hinzugefügt werden. Zuletzt wird das Jobangebot in der Datenbank gespeichert.
 
     \begin{figure}[h!]
-        \includegraphics[width = \linewidth]{sequence/JobOfferCreateSequenzDiagramm.png}
+        \includegraphics[width = \linewidth]{sequence/createJobOfferSequenzDiagramm.png}
         \caption{Sequenzdiagramm - Jobangebot erstellen}
         \label{fig:CreateJobOffer}
     \end{figure}
