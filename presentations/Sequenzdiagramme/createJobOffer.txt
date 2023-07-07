@@ -1,0 +1,81 @@
+title createJobOffer
+actor User
+participant JobOfferCreationController
+participant CompanyDetailsService
+participant AppUserDetailsService
+participant JobOfferService
+participant SkillService
+participant AppUserRepository
+participant CompanyRepository
+participant JobOfferRepository
+participant SkillRepository
+participant JobOfferSkillRepository
+database Database
+
+activate Database
+activate User
+
+User->JobOfferCreationController: request GET /offer/create
+activate JobOfferCreationController
+User<--JobOfferCreationController:Create Form
+deactivate JobOfferCreationController
+User->JobOfferCreationController: request POST /offer/create
+activate JobOfferCreationController
+
+JobOfferCreationController->CompanyDetailsService:findCompanyOfCurrentUser()
+CompanyDetailsService
+activate CompanyDetailsService
+CompanyDetailsService ->AppUserDetailsService: getCurrentAuthenticatedUser()
+activate AppUserDetailsService
+AppUserDetailsService->AppUserRepository: findById()
+activate AppUserRepository
+AppUserRepository->Database: SELECT AppUser
+AppUserRepository<--Database: appUser
+AppUserDetailsService<--AppUserRepository: appUser
+deactivate AppUserRepository
+CompanyDetailsService<--AppUserDetailsService: appUser
+deactivate AppUserDetailsService
+CompanyDetailsService->CompanyDetailsService: findByAdminId(appUser.id)
+activate CompanyDetailsService
+CompanyDetailsService->CompanyRepository: findByAdmin_Id()
+activate CompanyRepository
+CompanyRepository->Database: SELECT company
+CompanyRepository<--Database: company
+CompanyDetailsService<--CompanyRepository: company
+deactivate CompanyRepository
+CompanyDetailsService<--CompanyDetailsService: company
+deactivate CompanyDetailsService
+JobOfferCreationController<--CompanyDetailsService: company
+deactivate CompanyDetailsService
+
+JobOfferCreationController->JobOfferService: addNewJobOffer(company, request)
+activate JobOfferService
+JobOfferService->JobOfferRepository: save(jobOffer)
+activate JobOfferRepository
+JobOfferRepository->Database: INSERT JobOffer
+JobOfferService<--JobOfferRepository: jobOffer
+deactivate JobOfferRepository
+
+loop for each skill in request
+JobOfferService->SkillService: getSkillAndCreateIfNotExists()
+SkillService->SkillRepository: findByName(skill.name)
+SkillRepository->Database: SELECT Skill
+alt skill exists
+SkillRepository<--Database: skill
+SkillService<--SkillRepository: skill
+else skill doesn't exists
+SkillRepository<--Database: null
+SkillService<--SkillRepository: null
+SkillService->SkillRepository: createSkill(skill.name)
+SkillRepository->Database: INSERT Skill
+SkillService<--SkillRepository: skill
+end
+end
+JobOfferService->JobOfferSkillRepository: saveAll(jobOfferSkills)
+activate JobOfferSkillRepository
+JobOfferSkillRepository->Database: INSERT JobOfferSkill
+deactivate JobOfferSkillRepository
+JobOfferCreationController<--JobOfferService: jobOffer
+deactivate JobOfferService
+User<--JobOfferCreationController: REDIRECT /offer/{jobOffer.id}
+deactivate JobOfferCreationController

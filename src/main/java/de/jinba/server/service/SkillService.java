@@ -45,7 +45,7 @@ public class SkillService {
     public void addSkillToUser(AppUser user, SkillAddRequest request) {
         Optional<Skill> existingSkill = skillRepository.findByName(request.getSkillName());
         if (existingSkill.isPresent()) {
-            if (hasCurrentUserSkill(request.getSkillName())) {
+            if (hasUserSkill(user, request.getSkillName())) {
                 throw new EntityAlreadyExistsException("User already has skill");
             }
             AppUserSkill appUserSkill = AppUserSkill.builder()
@@ -130,15 +130,14 @@ public class SkillService {
     }
 
     /**
-     * Checks if current user has skill.
+     * Checks if the given user has the given skill.
      *
+     * @param user User to check.
      * @param name Name of skill to check.
      * @return True if current user has skill, false otherwise.
      */
-    public boolean hasCurrentUserSkill(String name) {
-        AppUser currentUser = appUserDetailsService.getCurrentAuthenticatedUser()
-                .orElseThrow(() -> new UnauthorizedException("Unauthenticated user attempted to add skill"));
-        return currentUser.getSkills().stream().anyMatch(skill -> skill.getSkill().getName().equals(name));
+    public boolean hasUserSkill(AppUser user, String name) {
+        return user.getSkills().stream().anyMatch(skill -> skill.getSkill().getName().equals(name));
     }
 
     /**
